@@ -1,15 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../app';
+import { createUser } from './helpers';
 
-const password = 'Password123@';
-
-const signup = async (email: string) => {
-  const res = await request(app)
-    .post('/api/v1/auth/signup')
-    .send({ name: 'Test User', email, password, cPassword: password });
-  return res.body.accessToken as string;
-};
+const signup = async (email: string) => (await createUser(email)).accessToken;
 
 const auth = (token: string) => ({ Authorization: `Bearer ${token}` });
 

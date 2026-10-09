@@ -1,6 +1,6 @@
 import { Router } from 'express';
+import { passwordAuthDisabled } from '../controllers/authController';
 import {
-  changePassword,
   deleteAccount,
   getProfile,
   resizeUserPhoto,
@@ -10,7 +10,7 @@ import {
 
 const router = Router();
 
-router.patch('/change-password', changePassword);
+router.patch('/change-password', passwordAuthDisabled);
 router.patch('/profile', uploadUserPhoto, resizeUserPhoto, updateProfile);
 router.get('/profile', getProfile);
 router.delete('/delete-account', deleteAccount);

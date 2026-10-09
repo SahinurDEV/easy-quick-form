@@ -5,6 +5,8 @@ WORKDIR /app
 
 # Backend URL is baked in at build time (Vite inlines VITE_* vars).
 ARG VITE_BACKEND_BASE_URL=http://localhost:8000/api/v1
+# Google OAuth client ID (sign-in is Google-only).
+ARG VITE_GOOGLE_CLIENT_ID=
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/validation/package.json ./packages/validation/
@@ -13,7 +15,7 @@ RUN pnpm install --no-frozen-lockfile --prod=false
 COPY packages/validation ./packages/validation
 COPY client ./client
 # Write build-time env so Vite picks it up, then build.
-RUN printf "VITE_BACKEND_BASE_URL=%s\n" "$VITE_BACKEND_BASE_URL" > client/.env \
+RUN printf "VITE_BACKEND_BASE_URL=%s\nVITE_GOOGLE_CLIENT_ID=%s\n" "$VITE_BACKEND_BASE_URL" "$VITE_GOOGLE_CLIENT_ID" > client/.env \
   && pnpm --filter @form-builder/validation build \
   && pnpm --filter @form-builder/client build
 

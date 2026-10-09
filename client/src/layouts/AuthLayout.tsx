@@ -22,11 +22,11 @@ export default function AuthLayout() {
             >
               <Link to="/demo">Demo</Link>
             </Button>
-            <Button size="lg" asChild>
-              <Link to={pathname === '/signup' ? '/login' : '/signup'}>
-                {pathname === '/signup' ? 'Log In' : 'Sign Up'}
-              </Link>
-            </Button>
+            {pathname !== '/login' && (
+              <Button size="lg" asChild>
+                <Link to="/login">Sign In</Link>
+              </Button>
+            )}
           </div>
         </div>
       </header>

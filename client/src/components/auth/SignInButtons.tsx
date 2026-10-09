@@ -1,10 +1,7 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 
-import {
-  GoogleSvg,
-  // SSOKeySvg,
-} from '../../assets/icons/Svgs';
+import { GoogleSvg } from '../../assets/icons/Svgs';
 import { Button } from '../ui/Button';
 import axios from '../../lib/axios';
 import toast from 'react-hot-toast';
@@ -14,7 +11,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { getEncryptedData } from '../../utils';
 import { cookieMaxAge } from '../../utils/constants';
 
-export default function SignInButtons({ disabled }: { disabled?: boolean }) {
+export default function SignInButtons() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { setAuth } = useAuth();
@@ -30,7 +27,6 @@ export default function SignInButtons({ disabled }: { disabled?: boolean }) {
       const toastId = toast.loading('Signing you in...');
       googleMutation.mutate(code, {
         onSuccess: res => {
-          // Persist the issued access token and user, matching the email flow.
           setAuth({ accessToken: res.data.accessToken, ...res.data.data.user });
           setCookie('userDetails', getEncryptedData(res.data.data.user), {
             path: '/',
@@ -42,41 +38,20 @@ export default function SignInButtons({ disabled }: { disabled?: boolean }) {
         onError: () => toast.error('Something went wrong!', { id: toastId }),
       });
     },
-    onError: () => toast.error('Google login failed!'),
+    onError: () => toast.error('Google sign-in failed!'),
   });
 
   return (
-    <div className="flex justify-around">
-      {/* <article className="space-y-2 text-center">
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          className="peer h-12 w-12 rounded-2xl"
-          disabled={disabled}
-          onClick={() => navigate('/sso/login')}
-        >
-          <SSOKeySvg className="h-[22px] w-[22px]" />
-        </Button>
-        <p className="text-sm text-muted-foreground transition-colors peer-hover:text-foreground">
-          SSO
-        </p>
-      </article> */}
-      <article className="space-y-2 text-center">
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          className="peer h-12 w-12 rounded-2xl"
-          disabled={disabled}
-          onClick={() => googleLogin()}
-        >
-          <GoogleSvg className="h-5 w-5" />
-        </Button>
-        <p className="text-sm text-muted-foreground peer-hover:text-foreground">
-          Google
-        </p>
-      </article>
-    </div>
+    <Button
+      type="button"
+      variant="outline"
+      size="lg"
+      className="w-full gap-3 text-base"
+      isLoading={googleMutation.isPending}
+      onClick={() => googleLogin()}
+    >
+      <GoogleSvg className="h-5 w-5" />
+      Sign in with Google
+    </Button>
   );
 }
