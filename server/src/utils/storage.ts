@@ -36,11 +36,15 @@ const uploadToImgbb = async (
 
   // ImgBB intermittently answers "Internal upload error" (400, code 111) or
   // 5xx for valid images, so retry a few times before giving up.
+  // Stay well inside the serverless function's time limit.
+  const deadline = Date.now() + 20000;
   for (let attempt = 1; attempt <= IMGBB_ATTEMPTS; attempt++) {
+    const timeLeft = deadline - Date.now();
+    if (timeLeft < 1000) break;
     const res = await fetch('https://api.imgbb.com/1/upload', {
       method: 'POST',
       body: new URLSearchParams({ key: env.IMGBB_API_KEY!, image, name }),
-      signal: AbortSignal.timeout(8000),
+      signal: AbortSignal.timeout(Math.min(8000, timeLeft)),
     }).catch(() => null);
     const json = res
       ? ((await res.json().catch(() => null)) as ImgbbResponse)
