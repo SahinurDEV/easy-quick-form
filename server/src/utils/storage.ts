@@ -20,32 +20,44 @@ if (cloudinaryConfigured) {
   });
 }
 
+type ImgbbResponse = {
+  data?: { display_url?: string };
+  error?: { message?: string; code?: number };
+} | null;
+
+const IMGBB_ATTEMPTS = 4;
+
 const uploadToImgbb = async (
   buffer: Buffer,
   filename: string,
 ): Promise<string> => {
-  const body = new URLSearchParams({
-    key: env.IMGBB_API_KEY!,
-    image: buffer.toString('base64'),
-    name: filename.replace(/\.jpeg$/, ''),
-  });
-  const res = await fetch('https://api.imgbb.com/1/upload', {
-    method: 'POST',
-    body,
-    signal: AbortSignal.timeout(20000),
-  });
-  const json = (await res.json().catch(() => null)) as {
-    data?: { display_url?: string };
-    error?: { message?: string; code?: number };
-  } | null;
-  if (!res.ok || !json?.data?.display_url) {
-    logger.error(
-      { status: res.status, imgbbError: json?.error },
+  const image = buffer.toString('base64');
+  const name = filename.replace(/\.jpeg$/, '');
+
+  // ImgBB intermittently answers "Internal upload error" (400, code 111) or
+  // 5xx for valid images, so retry a few times before giving up.
+  for (let attempt = 1; attempt <= IMGBB_ATTEMPTS; attempt++) {
+    const res = await fetch('https://api.imgbb.com/1/upload', {
+      method: 'POST',
+      body: new URLSearchParams({ key: env.IMGBB_API_KEY!, image, name }),
+      signal: AbortSignal.timeout(15000),
+    }).catch(() => null);
+    const json = res
+      ? ((await res.json().catch(() => null)) as ImgbbResponse)
+      : null;
+    if (res?.ok && json?.data?.display_url) return json.data.display_url;
+
+    logger.warn(
+      { attempt, status: res?.status, imgbbError: json?.error },
       'ImgBB upload failed',
     );
-    throw new AppError('Image upload failed. Please try again later.', 502);
+    const retryable = !res || res.status >= 500 || json?.error?.code === 111;
+    if (!retryable) break;
+    if (attempt < IMGBB_ATTEMPTS)
+      await new Promise(resolve => setTimeout(resolve, 400 * attempt));
   }
-  return json.data.display_url;
+
+  throw new AppError('Image upload failed. Please try again later.', 502);
 };
 
 /**
