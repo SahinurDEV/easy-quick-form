@@ -74,7 +74,7 @@ easy-quick-form/
 1. **Clone and install**
 
    ```bash
-   git clone https://github.com/devSahinur/easy-quick-form.git
+   git clone https://github.com/SahinurDEV/easy-quick-form.git
    cd easy-quick-form
    pnpm install
    ```

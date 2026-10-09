@@ -24,12 +24,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/devSahinur/easy-quick-form.git"
+    "url": "https://github.com/SahinurDEV/easy-quick-form.git"
   },
   "bugs": {
-    "url": "https://github.com/devSahinur/easy-quick-form/issues"
+    "url": "https://github.com/SahinurDEV/easy-quick-form/issues"
   },
-  "homepage": "https://github.com/devSahinur/easy-quick-form#readme",
+  "homepage": "https://github.com/SahinurDEV/easy-quick-form#readme",
   "devDependencies": {
     "prettier": "^3.0.3"
   }

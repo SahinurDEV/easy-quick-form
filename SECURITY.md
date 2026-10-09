@@ -5,7 +5,7 @@
 If you discover a security vulnerability in Easy Quick Form, please report it
 **privately** — do not open a public GitHub issue.
 
-Instead, use GitHub's [private vulnerability reporting](https://github.com/devSahinur/easy-quick-form/security/advisories/new)
+Instead, use GitHub's [private vulnerability reporting](https://github.com/SahinurDEV/easy-quick-form/security/advisories/new)
 or contact the maintainer directly.
 
 Please include:

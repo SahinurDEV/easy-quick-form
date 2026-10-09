@@ -59,7 +59,7 @@ Write clear, imperative commit messages (e.g. `Fix refresh-token rotation on log
 
 ## Reporting bugs & requesting features
 
-Use the [issue templates](https://github.com/devSahinur/easy-quick-form/issues/new/choose).
+Use the [issue templates](https://github.com/SahinurDEV/easy-quick-form/issues/new/choose).
 For security issues, **do not** open a public issue — see [SECURITY.md](./SECURITY.md).
 
 Thank you for helping make Easy Quick Form better! 🎉
