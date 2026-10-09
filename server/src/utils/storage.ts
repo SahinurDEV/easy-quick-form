@@ -25,7 +25,7 @@ type ImgbbResponse = {
   error?: { message?: string; code?: number };
 } | null;
 
-const IMGBB_ATTEMPTS = 4;
+const IMGBB_ATTEMPTS = 6;
 
 const uploadToImgbb = async (
   buffer: Buffer,
@@ -40,7 +40,7 @@ const uploadToImgbb = async (
     const res = await fetch('https://api.imgbb.com/1/upload', {
       method: 'POST',
       body: new URLSearchParams({ key: env.IMGBB_API_KEY!, image, name }),
-      signal: AbortSignal.timeout(15000),
+      signal: AbortSignal.timeout(8000),
     }).catch(() => null);
     const json = res
       ? ((await res.json().catch(() => null)) as ImgbbResponse)
@@ -54,7 +54,7 @@ const uploadToImgbb = async (
     const retryable = !res || res.status >= 500 || json?.error?.code === 111;
     if (!retryable) break;
     if (attempt < IMGBB_ATTEMPTS)
-      await new Promise(resolve => setTimeout(resolve, 400 * attempt));
+      await new Promise(resolve => setTimeout(resolve, 250 * attempt));
   }
 
   throw new AppError('Image upload failed. Please try again later.', 502);
