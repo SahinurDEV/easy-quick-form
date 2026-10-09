@@ -9,6 +9,7 @@ import catchAsyncError from '../utils/catchAsyncError';
 import AppError from '../utils/appError';
 import {
   accessTokenExpiresIn,
+  clearCookieOptions,
   cookieOptions,
   refreshTokenExpiresIn,
 } from '../utils/constants';
@@ -41,7 +42,7 @@ export const logout = catchAsyncError(async (req: Request, res: Response) => {
 
   const foundUser = await User.findOne({ refreshToken }).exec();
   if (!foundUser) {
-    res.clearCookie('refreshToken', cookieOptions);
+    res.clearCookie('refreshToken', clearCookieOptions);
     res.sendStatus(204);
     return;
   }
@@ -51,7 +52,7 @@ export const logout = catchAsyncError(async (req: Request, res: Response) => {
   );
   await foundUser.save();
 
-  res.clearCookie('refreshToken', cookieOptions);
+  res.clearCookie('refreshToken', clearCookieOptions);
   res.sendStatus(204);
 });
 

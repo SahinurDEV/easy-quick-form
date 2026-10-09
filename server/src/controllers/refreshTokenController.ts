@@ -4,7 +4,7 @@ import { verify } from 'jsonwebtoken';
 import User from '../models/userModel';
 import catchAsyncError from '../utils/catchAsyncError';
 import AppError from '../utils/appError';
-import { cookieOptions } from '../utils/constants';
+import { clearCookieOptions, cookieOptions } from '../utils/constants';
 import { signAccessToken, signRefreshToken } from './authController';
 import { pruneRefreshTokens } from '../utils/refreshTokens';
 
@@ -12,7 +12,7 @@ const refreshTokenHandler = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const refreshToken = req.cookies.refreshToken as string;
     if (!refreshToken) return next(new AppError('No refresh token!', 401));
-    res.clearCookie('refreshToken', cookieOptions);
+    res.clearCookie('refreshToken', clearCookieOptions);
 
     const foundUser = await User.findOne({ refreshToken }).exec();
 
