@@ -12,7 +12,7 @@ const refreshTokenHandler = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const refreshToken = req.cookies.refreshToken as string;
     if (!refreshToken) return next(new AppError('No refresh token!', 401));
-   res.clearCookie('refreshToken', clearCookieOptions);
+    res.clearCookie('refreshToken', clearCookieOptions);
 
     const foundUser = await User.findOne({ refreshToken }).exec();
 

@@ -26,14 +26,12 @@ export const signRefreshToken = (id: string) =>
     expiresIn: refreshTokenExpiresIn,
   });
 
-
 // Sign-in is Google-only; the old email/password endpoints answer 410 Gone.
 export const passwordAuthDisabled = (
   _req: Request,
   _res: Response,
   next: NextFunction,
 ) => next(new AppError('Password sign-in is disabled; use Google', 410));
-
 
 export const logout = catchAsyncError(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
@@ -44,7 +42,7 @@ export const logout = catchAsyncError(async (req: Request, res: Response) => {
 
   const foundUser = await User.findOne({ refreshToken }).exec();
   if (!foundUser) {
-   res.clearCookie('refreshToken', clearCookieOptions);
+    res.clearCookie('refreshToken', clearCookieOptions);
     res.sendStatus(204);
     return;
   }
@@ -53,7 +51,8 @@ export const logout = catchAsyncError(async (req: Request, res: Response) => {
     r => r !== refreshToken,
   );
   await foundUser.save();
-res.clearCookie('refreshToken', clearCookieOptions);
+
+  res.clearCookie('refreshToken', clearCookieOptions);
   res.sendStatus(204);
 });
 

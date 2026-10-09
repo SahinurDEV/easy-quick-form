@@ -4,8 +4,6 @@ import catchAsyncError from '../utils/catchAsyncError';
 import { userProfileSchema } from '@form-builder/validation';
 import AppError from '../utils/appError';
 import User from '../models/userModel';
-import { compare, hash } from 'bcrypt';
-import { clearCookieOptions, cookieOptions } from '../utils/constants';
 import sharp from 'sharp';
 import { saveAvatar } from '../utils/storage';
 
@@ -48,6 +46,7 @@ export const resizeUserPhoto = catchAsyncError(
     next();
   },
 );
+
 export const updateProfile = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     // Validate user profile fields

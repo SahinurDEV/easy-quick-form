@@ -20,9 +20,8 @@ export const cookieOptions: CookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
-export const clearCookieOptions: CookieOptions = {
-  httpOnly: true,
-  sameSite: 'none',
-  secure: true,
-  path: '/',
-};
+// Options for res.clearCookie(): same as cookieOptions but without maxAge,
+// which Express deprecates for clearCookie (it always expires the cookie).
+const { maxAge: _maxAge, ...clearCookieOptionsWithoutMaxAge } = cookieOptions;
+export const clearCookieOptions: CookieOptions =
+  clearCookieOptionsWithoutMaxAge;
