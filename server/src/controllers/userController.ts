@@ -61,11 +61,27 @@ export const updateProfile = catchAsyncError(
       );
 
     const { name, email } = result.data;
+
+    // The email is managed by Google (sign-in matches accounts by email), so
+    // it can't be changed here.
+    if (email !== undefined) {
+      const currentUser = await User.findById(req.userId).exec();
+      if (email.toLowerCase() !== currentUser?.email)
+        return next(
+          new AppError(
+            'Email is managed by Google and cannot be changed',
+            400,
+            {
+              email: ['Email is managed by Google and cannot be changed'],
+            },
+          ),
+        );
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       req.userId,
       {
         name,
-        email,
         avatar: req.file ? req.file.filename : req.body.avatar,
       },
       { new: true },

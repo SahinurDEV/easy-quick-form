@@ -49,9 +49,9 @@ export default function ProfileDetails() {
     reset,
   } = useForm<ProfileDetailsFormType>({
     resolver: zodResolver(userProfileSchema),
+    // The email comes from the Google account and can't be changed here.
     values: {
       name: auth.name,
-      email: auth.email,
     },
   });
 
@@ -192,13 +192,13 @@ export default function ProfileDetails() {
           {...register('name')}
         />
         <InputField
-          label="Email"
+          label="Email (Managed by Google)"
           type="email"
-          placeholder="Enter your email address"
-          showRequired
-          disabled={isPending}
-          errorMessage={errors.email?.message}
-          {...register('email')}
+          name="email"
+          value={auth.email ?? ''}
+          title="Your email comes from your Google account"
+          readOnly
+          disabled
         />
       </article>
       <div className="flex justify-end gap-4" ref={parent}>
@@ -215,7 +215,7 @@ export default function ProfileDetails() {
         )}
         <Button
           disabled={!isDirty || isPending}
-          isLoading={isPending && variables?.email !== undefined}
+          isLoading={isPending && variables?.name !== undefined}
         >
           Save Changes
         </Button>
