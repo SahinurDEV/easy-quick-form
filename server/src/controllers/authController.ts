@@ -170,7 +170,12 @@ export const logout = catchAsyncError(async (req: Request, res: Response) => {
 
 export const forgotPassword = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    if (!isEmailConfigured())
+    // Reset links always point at the configured frontend, never at a
+    // request header.
+    const clientUrl =
+      env.CLIENT_URL ??
+      (env.NODE_ENV === 'production' ? undefined : 'http://localhost:4400');
+    if (!isEmailConfigured() || !clientUrl)
       return next(
         new AppError('Password reset by email is not available yet.', 503),
       );
@@ -203,7 +208,10 @@ export const forgotPassword = catchAsyncError(
     await foundUser.save();
 
     // Send it to user's email
-    const resetUrl = `${req.header('Referer')}reset-password/${resetToken}`;
+    const resetUrl = `${clientUrl.replace(
+      /\/+$/,
+      '',
+    )}/reset-password/${resetToken}`;
 
     const message =
       'You are receiving this email because you have just requested to reset your Easy Quick Form password. Please click on the link below or copy and paste the URL in a new browser window to reset your password:\n\n' +
