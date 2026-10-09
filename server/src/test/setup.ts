@@ -10,6 +10,7 @@ process.env.SMTP_USERNAME = '';
 process.env.SMTP_PASSWORD = '';
 process.env.GOOGLE_CLIENT_ID = '';
 process.env.GOOGLE_CLIENT_SECRET = '';
+process.env.IMGBB_API_KEY = '';
 process.env.CLIENT_URL = 'https://app.example.com';
 
 import { beforeAll, afterAll, afterEach } from 'vitest';

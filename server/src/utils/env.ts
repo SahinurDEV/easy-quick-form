@@ -28,6 +28,8 @@ const envSchema = z.object({
     z.string().url().optional(),
   ),
 
+  IMGBB_API_KEY: z.string().optional(),
+
   CLOUDINARY_CLOUD_NAME: z.string().optional(),
   CLOUDINARY_API_KEY: z.string().optional(),
   CLOUDINARY_API_SECRET: z.string().optional(),

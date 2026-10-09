@@ -33,9 +33,10 @@
 - 🧰 Rich form elements — WYSIWYG editor, calendar, date-range picker, and more.
 - 🪵 Centralized error logging and consistent error handling / user feedback.
 
-> **Note:** profile pictures are uploaded to Cloudinary when the `CLOUDINARY_*` env vars
-> are set, and to the server's local disk otherwise (fine for local development). On
-> Vercel, avatar uploads return `503` until Cloudinary is configured.
+> **Note:** profile pictures are uploaded to ImgBB when `IMGBB_API_KEY` is set, otherwise
+> to Cloudinary when the `CLOUDINARY_*` env vars are set, and otherwise to the server's
+> local disk (fine for local development). On Vercel, avatar uploads return `503` unless
+> ImgBB or Cloudinary is configured.
 
 ## Tech stack
 
@@ -166,7 +167,7 @@ Environment variables:
 
 - **API:** `DATABASE`, `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`, `NODE_ENV=production`,
   `CLIENT_URL` (the client origin, for CORS). Optional: `SMTP_*` (emails), `GOOGLE_CLIENT_ID` /
-  `GOOGLE_CLIENT_SECRET` (Google sign-in), `CLOUDINARY_*` (avatar uploads). Without them
+  `GOOGLE_CLIENT_SECRET` (Google sign-in), `IMGBB_API_KEY` or `CLOUDINARY_*` (avatar uploads). Without them
   those features are switched off and the API answers `503` for them.
 - **Client:** `VITE_BACKEND_BASE_URL` (e.g. `https://<api-domain>/api/v1`), `VITE_SECRET_KEY`,
   and optionally `VITE_GOOGLE_CLIENT_ID` (shows the Google button when set). `VITE_*` values

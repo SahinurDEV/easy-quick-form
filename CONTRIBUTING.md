@@ -41,7 +41,7 @@ pnpm dev                                  # client on :4400, API on :8000
 Generate the JWT secrets with
 `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`.
 
-SMTP, Google OAuth and Cloudinary are **optional**. Leave them empty and the app still
+SMTP, Google OAuth and ImgBB/Cloudinary are **optional**. Leave them empty and the app still
 runs; those features are just turned off (emails are skipped, Google sign-in is hidden,
 avatars go to local disk).
 

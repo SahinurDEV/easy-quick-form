@@ -19,10 +19,33 @@ if (cloudinaryConfigured) {
   });
 }
 
+const uploadToImgbb = async (
+  buffer: Buffer,
+  filename: string,
+): Promise<string> => {
+  const body = new URLSearchParams({
+    key: env.IMGBB_API_KEY!,
+    image: buffer.toString('base64'),
+    name: filename.replace(/\.jpeg$/, ''),
+  });
+  const res = await fetch('https://api.imgbb.com/1/upload', {
+    method: 'POST',
+    body,
+    signal: AbortSignal.timeout(20000),
+  });
+  const json = (await res.json().catch(() => null)) as {
+    data?: { display_url?: string };
+  } | null;
+  if (!res.ok || !json?.data?.display_url)
+    throw new AppError('Image upload failed. Please try again later.', 502);
+  return json.data.display_url;
+};
+
 /**
  * Persists a processed avatar image and returns its public URL.
  *
- * - Uploads to Cloudinary when `CLOUDINARY_*` env vars are set (works in any
+ * - Uploads to ImgBB when `IMGBB_API_KEY` is set.
+ * - Otherwise uploads to Cloudinary when `CLOUDINARY_*` env vars are set (works in any
  *   stateless/serverless environment).
  * - Otherwise writes to local disk under `public/img/users` (served by
  *   `express.static('public')`), which is fine for local development.
@@ -32,6 +55,8 @@ export const saveAvatar = async (
   filename: string,
   req: Request,
 ): Promise<string> => {
+  if (env.IMGBB_API_KEY) return uploadToImgbb(buffer, filename);
+
   if (cloudinaryConfigured) {
     return new Promise<string>((resolve, reject) => {
       cloudinary.uploader
