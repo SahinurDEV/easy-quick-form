@@ -4,6 +4,7 @@ import type { Request } from 'express';
 import { v2 as cloudinary } from 'cloudinary';
 import { env } from './env';
 import AppError from './appError';
+import logger from './logger';
 
 const cloudinaryConfigured = Boolean(
   env.CLOUDINARY_CLOUD_NAME &&
@@ -35,9 +36,15 @@ const uploadToImgbb = async (
   });
   const json = (await res.json().catch(() => null)) as {
     data?: { display_url?: string };
+    error?: { message?: string; code?: number };
   } | null;
-  if (!res.ok || !json?.data?.display_url)
+  if (!res.ok || !json?.data?.display_url) {
+    logger.error(
+      { status: res.status, imgbbError: json?.error },
+      'ImgBB upload failed',
+    );
     throw new AppError('Image upload failed. Please try again later.', 502);
+  }
   return json.data.display_url;
 };
 
