@@ -8,7 +8,7 @@ import {
 import AppError from '../utils/appError';
 import User from '../models/userModel';
 import { compare, hash } from 'bcrypt';
-import { cookieOptions } from '../utils/constants';
+import { clearCookieOptions, cookieOptions } from '../utils/constants';
 import sharp from 'sharp';
 import { saveAvatar } from '../utils/storage';
 
@@ -81,7 +81,7 @@ export const changePassword = catchAsyncError(
     foundUser.refreshToken = [];
     await foundUser.save();
 
-    res.clearCookie('refreshToken', cookieOptions);
+   res.clearCookie('refreshToken', clearCookieOptions);
 
     res.status(200).json({
       status: 'success',
