@@ -6,6 +6,11 @@
 </p>
 
 <p align="center">
+  <b>🚀 Live demo: <a href="https://easy-quick-form.vercel.app">easy-quick-form.vercel.app</a></b>
+  &nbsp;·&nbsp; API: <a href="https://easy-quick-form-api.vercel.app/api/docs/">easy-quick-form-api.vercel.app/api/docs</a>
+</p>
+
+<p align="center">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg" />
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" />
   <img alt="React" src="https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB" />
@@ -28,9 +33,9 @@
 - 🧰 Rich form elements — WYSIWYG editor, calendar, date-range picker, and more.
 - 🪵 Centralized error logging and consistent error handling / user feedback.
 
-> **Note:** profile pictures are stored on the server's local disk, so the upload
-> feature is intended for local development. For production, swap the disk storage in
-> `server/src/controllers/userController.ts` for a cloud store (S3, Cloudinary, etc.).
+> **Note:** profile pictures are uploaded to Cloudinary when the `CLOUDINARY_*` env vars
+> are set, and to the server's local disk otherwise (fine for local development). On
+> Vercel, avatar uploads return `503` until Cloudinary is configured.
 
 ## Tech stack
 
@@ -132,6 +137,43 @@ Run from the repo root:
 | `pnpm dev`      | Start the client and server in watch mode    |
 | `pnpm build`    | Build all workspace packages                 |
 | `pnpm preview`  | Preview the production builds                 |
+
+## Deploying to Vercel
+
+The live demo runs as two Vercel projects built from this monorepo (both are connected
+to the GitHub repo, so every push to `main` redeploys them):
+
+| Project               | Root directory | What it is                                                                                         |
+| --------------------- | -------------- | -------------------------------------------------------------------------------------------------- |
+| `easy-quick-form`     | `client`       | Vite static build; `client/vercel.json` adds the SPA fallback rewrite to `index.html`               |
+| `easy-quick-form-api` | `server`       | Express app as a single serverless function (`server/api/index.js`); `server/vercel.json` rewrites every path to it |
+
+Both projects use Node.js 24.x, keep **"Include files outside the root directory"**
+enabled (the shared `packages/validation` lives outside them), and install from the
+workspace root with pnpm. The build commands compile `@form-builder/validation` first.
+
+How the API runs serverless:
+
+- `server/api/index.js` reuses the compiled Express app (`dist/app.js`) without calling
+  `app.listen`, and caches the MongoDB connection across warm invocations
+  (`server/src/utils/db.ts`). `pnpm dev` / Docker still start `src/server.ts` as before.
+- `trust proxy` is enabled on Vercel so rate limiting sees the real client IP.
+- The refresh-token cookie is `SameSite=None; Secure`, so it works across the two domains.
+- Swagger UI's static assets are copied into the static output at build time
+  (`server/scripts/copy-swagger-assets.js`).
+
+Environment variables:
+
+- **API:** `DATABASE`, `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`, `NODE_ENV=production`,
+  `CLIENT_URL` (the client origin, for CORS). Optional: `SMTP_*` (emails), `GOOGLE_CLIENT_ID` /
+  `GOOGLE_CLIENT_SECRET` (Google sign-in), `CLOUDINARY_*` (avatar uploads). Without them
+  those features are switched off and the API answers `503` for them.
+- **Client:** `VITE_BACKEND_BASE_URL` (e.g. `https://<api-domain>/api/v1`), `VITE_SECRET_KEY`,
+  and optionally `VITE_GOOGLE_CLIENT_ID` (shows the Google button when set). `VITE_*` values
+  are baked into the public JS bundle, so never put real secrets in them.
+
+To deploy your own copy: create the two projects with the root directories above, set the
+env vars, then run `vercel deploy --prod` from the repo root (or push to the connected repo).
 
 ## API reference
 

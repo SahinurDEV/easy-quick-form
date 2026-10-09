@@ -18,7 +18,7 @@ import {
   cookieOptions,
   refreshTokenExpiresIn,
 } from '../utils/constants';
-import sendEmail from '../utils/sendEmail';
+import sendEmail, { isEmailConfigured } from '../utils/sendEmail';
 import { env } from '../utils/env';
 import { pruneRefreshTokens } from '../utils/refreshTokens';
 
@@ -170,6 +170,11 @@ export const logout = catchAsyncError(async (req: Request, res: Response) => {
 
 export const forgotPassword = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
+    if (!isEmailConfigured())
+      return next(
+        new AppError('Password reset by email is not available yet.', 503),
+      );
+
     // Validate email
     const result = await forgotPasswordSchema.safeParseAsync(req.body);
     if (!result.success)
@@ -275,6 +280,9 @@ export const resetPassword = catchAsyncError(
 
 export const googleLogin = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
+    if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET)
+      return next(new AppError('Google sign-in is not available yet.', 503));
+
     if (!req.body.code)
       return next(new AppError('Authorization code is required!', 400));
 

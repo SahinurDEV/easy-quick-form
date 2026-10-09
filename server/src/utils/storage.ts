@@ -3,6 +3,7 @@ import path from 'path';
 import type { Request } from 'express';
 import { v2 as cloudinary } from 'cloudinary';
 import { env } from './env';
+import AppError from './appError';
 
 const cloudinaryConfigured = Boolean(
   env.CLOUDINARY_CLOUD_NAME &&
@@ -50,6 +51,14 @@ export const saveAvatar = async (
         .end(buffer);
     });
   }
+
+  // Serverless filesystems are read-only/ephemeral: without Cloudinary there
+  // is nowhere durable to store the file, so reject the upload cleanly.
+  if (process.env.VERCEL)
+    throw new AppError(
+      'Avatar uploads are not configured on this server yet.',
+      503,
+    );
 
   const uploadDir = path.join(__dirname, '..', '..', 'public', 'img', 'users');
   if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });

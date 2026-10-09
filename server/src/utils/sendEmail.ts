@@ -6,7 +6,12 @@ interface Options {
   message: string;
 }
 
+export const isEmailConfigured = () => Boolean(process.env.SMTP_HOST);
+
 const sendEmail = async (options: Options) => {
+  // SMTP is optional: without it, emails are simply skipped.
+  if (!isEmailConfigured()) return;
+
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),

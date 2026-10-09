@@ -20,6 +20,36 @@ are expected to uphold it.
    git checkout -b feat/short-description
    ```
 
+## Local setup
+
+You need **Node.js 18+** (22 or 24 recommended), **pnpm** (`corepack enable`), and a
+MongoDB database: a free [Atlas](https://www.mongodb.com/atlas/database) cluster, a local
+`mongod`, or just `docker compose up mongo`.
+
+```bash
+git clone https://github.com/<your-username>/easy-quick-form.git
+cd easy-quick-form
+pnpm install
+pnpm -F @form-builder/validation build    # shared schemas, needed before the first run
+
+cp server/.env.example server/.env        # set DATABASE + the two JWT secrets
+cp client/.env.example client/.env        # set VITE_SECRET_KEY to any long random string
+
+pnpm dev                                  # client on :4400, API on :8000
+```
+
+Generate the JWT secrets with
+`node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`.
+
+SMTP, Google OAuth and Cloudinary are **optional**. Leave them empty and the app still
+runs; those features are just turned off (emails are skipped, Google sign-in is hidden,
+avatars go to local disk).
+
+Prefer containers? `docker compose up --build` starts MongoDB, the API and the client
+(client on `http://localhost:8080`).
+
+Interactive API docs live at `http://localhost:8000/api/docs`.
+
 ## Development workflow
 
 - This is a **pnpm workspace monorepo** (`client`, `server`, `packages/validation`).
@@ -32,16 +62,33 @@ are expected to uphold it.
 Please run these checks locally and make sure they pass:
 
 ```bash
-# Type-check the server
+# Type-check + test the server
 pnpm -F @form-builder/server exec tsc --noEmit
+pnpm -F @form-builder/server test
 
 # Lint + build the client
 pnpm -F @form-builder/client lint
+pnpm -F @form-builder/client test
 pnpm -F @form-builder/client build
 ```
 
 Code is formatted with **Prettier** (config in `.prettierrc`). Please format your
 changes before committing.
+
+## Deployment
+
+`main` auto-deploys to Vercel (two projects: `client/` → static site, `server/` →
+serverless function). See [Deploying to Vercel](./README.md#deploying-to-vercel) for how
+it is wired. If your change adds an environment variable, document it in the matching
+`.env.example` and mention it in your PR so a maintainer can add it on Vercel.
+Keep `app.listen` out of `src/app.ts` (only `src/server.ts` listens) so the app still
+works as a serverless function.
+
+## Good first issues
+
+New here? Look for issues labelled
+[`good first issue`](https://github.com/SahinurDEV/easy-quick-form/labels/good%20first%20issue).
+Comment on one to claim it before you start.
 
 ## Commit messages
 

@@ -22,7 +22,11 @@ const envSchema = z.object({
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
 
-  CLIENT_URL: z.string().url().optional(),
+  // Treat an empty value (as in .env.example) the same as unset.
+  CLIENT_URL: z.preprocess(
+    v => (v === '' ? undefined : v),
+    z.string().url().optional(),
+  ),
 
   CLOUDINARY_CLOUD_NAME: z.string().optional(),
   CLOUDINARY_API_KEY: z.string().optional(),

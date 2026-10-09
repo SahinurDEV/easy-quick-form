@@ -5,7 +5,8 @@
     "dev": "nodemon",
     "build": "tsc",
     "preview": "node dist/server.js",
-    "test": "vitest run"
+    "test": "vitest run",
+    "vercel-build": "pnpm --filter @form-builder/validation build && tsc && node scripts/copy-swagger-assets.js"
   },
   "keywords": [],
   "author": "Sahinur Islam",

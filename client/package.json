@@ -58,7 +58,7 @@
     "react-easy-crop": "^5.0.2",
     "react-hook-form": "^7.47.0",
     "react-hot-toast": "^2.4.1",
-    "react-router-dom": "^6.17.0",
+    "react-router-dom": "^6.30.6",
     "uuid": "^9.0.1",
     "zod": "^3.22.4",
     "zustand": "^4.4.4"

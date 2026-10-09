@@ -29,3 +29,4 @@ pnpm-debug.log*
 # Misc
 .vercel
 coverage
+server/public/api

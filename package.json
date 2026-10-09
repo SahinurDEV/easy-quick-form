@@ -29,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/SahinurDEV/easy-quick-form/issues"
   },
-  "homepage": "https://github.com/SahinurDEV/easy-quick-form#readme",
+  "homepage": "https://easy-quick-form.vercel.app",
   "devDependencies": {
     "prettier": "^3.0.3"
   },

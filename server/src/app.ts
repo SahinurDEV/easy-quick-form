@@ -20,6 +20,10 @@ import openapiSpec from './docs/openapi';
 
 const app: Application = express();
 
+// Behind Vercel's (or any single) reverse proxy, trust the first hop so
+// req.ip / rate limiting use the real client IP instead of the proxy's.
+if (process.env.VERCEL || process.env.TRUST_PROXY) app.set('trust proxy', 1);
+
 // Interactive API docs — mounted before helmet so its CSP doesn't block the
 // Swagger UI assets.
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
@@ -45,9 +49,8 @@ app.use(mongoSanitize());
 
 app.use(hpp());
 // testing route
-app.get("/test", (req, res) => {
-  let userIP = req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  res.send({ message: "This is Easy Quick Form API", userIP });
+app.get(['/', '/test'], (req, res) => {
+  res.send({ message: 'This is Easy Quick Form API', userIP: req.ip });
 });
 
 app.use('/api/v1/auth', authRouter);
