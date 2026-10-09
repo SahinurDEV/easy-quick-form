@@ -302,17 +302,22 @@ export const googleLogin = catchAsyncError(
 
     // Exchange the one-time auth code for tokens, then verify the ID token
     // against Google to securely obtain the user's profile.
-    const { tokens } = await oAuth2Client.getToken(req.body.code);
-    if (!tokens.id_token)
-      return next(
-        new AppError('Failed to retrieve user data from Google!', 500),
-      );
+    let payload;
+    try {
+      const { tokens } = await oAuth2Client.getToken(req.body.code);
+      if (!tokens.id_token) throw new Error('No ID token from Google');
 
-    const ticket = await oAuth2Client.verifyIdToken({
-      idToken: tokens.id_token,
-      audience: env.GOOGLE_CLIENT_ID,
-    });
-    const payload = ticket.getPayload();
+      const ticket = await oAuth2Client.verifyIdToken({
+        idToken: tokens.id_token,
+        audience: env.GOOGLE_CLIENT_ID,
+      });
+      payload = ticket.getPayload();
+    } catch {
+      // Expired/invalid codes or tokens are a client problem, not a 500.
+      return next(
+        new AppError('Google sign-in failed. Please try again.', 401),
+      );
+    }
     if (!payload?.email)
       return next(new AppError('Google account has no email!', 400));
 
