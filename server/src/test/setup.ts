@@ -10,6 +10,7 @@ process.env.SMTP_USERNAME = '';
 process.env.SMTP_PASSWORD = '';
 process.env.GOOGLE_CLIENT_ID = '';
 process.env.GOOGLE_CLIENT_SECRET = '';
+process.env.CLIENT_URL = 'https://app.example.com';
 
 import { beforeAll, afterAll, afterEach } from 'vitest';
 import mongoose from 'mongoose';
@@ -30,6 +31,9 @@ afterEach(async () => {
 });
 
 afterAll(async () => {
+  // Test files share one process; drop compiled models so the next file can
+  // register them again.
+  mongoose.deleteModel(/.+/);
   await mongoose.disconnect();
   await mongod.stop();
 });

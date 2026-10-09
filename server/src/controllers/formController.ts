@@ -40,7 +40,7 @@ export const deleteForms = catchAsyncError(
     if (!forms)
       return next(new AppError('Please provide list of form id!', 400));
 
-    await Form.deleteMany({ _id: { $in: forms } });
+    await Form.deleteMany({ _id: { $in: forms }, user: req.userId });
 
     res.sendStatus(204);
   },
@@ -87,9 +87,13 @@ export const createForm = catchAsyncError(
 
 export const updateForm = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    const form = await Form.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    // Owners can't reassign a form to another user.
+    const { user: _user, ...updates } = req.body;
+    const form = await Form.findOneAndUpdate(
+      { _id: req.params.id, user: req.userId },
+      updates,
+      { new: true },
+    );
     if (!form) return next(new AppError('No form found with that ID', 404));
 
     res.status(200).json({
@@ -103,7 +107,10 @@ export const updateForm = catchAsyncError(
 
 export const deleteForm = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    const form = await Form.findByIdAndDelete(req.params.id);
+    const form = await Form.findOneAndDelete({
+      _id: req.params.id,
+      user: req.userId,
+    });
     if (!form) return next(new AppError('No form found with that ID', 404));
 
     res.sendStatus(204);
