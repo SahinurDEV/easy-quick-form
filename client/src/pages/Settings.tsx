@@ -1,5 +1,4 @@
 import { Trash2Icon } from 'lucide-react';
-import ChangePassword from '../components/settings/ChangePassword';
 import ProfileDetails from '../components/settings/ProfileDetails';
 import { Button } from '../components/ui/Button';
 import useTitle from '../hooks/useTitle';
@@ -38,7 +37,7 @@ export default function Settings() {
             Account Settings
           </h1>
           <p className="text-muted-foreground">
-            Manage profile information and change your password
+            Manage your profile information
           </p>
         </div>
         <AlertDialog>
@@ -78,7 +77,6 @@ export default function Settings() {
       </section>
       <section className="mt-6 space-y-8 rounded-lg border p-8 pt-6">
         <ProfileDetails />
-        <ChangePassword />
       </section>
     </div>
   );

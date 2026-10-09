@@ -1,4 +1,8 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from 'react-router-dom';
 import { lazy, Suspense, type ReactNode } from 'react';
 import AuthLayout from './layouts/AuthLayout';
 import BaseLayout from './layouts/BaseLayout';
@@ -9,9 +13,6 @@ import Error from './pages/Error';
 // Route components are lazy-loaded so each page ships in its own chunk
 // instead of one large bundle.
 const Login = lazy(() => import('./pages/auth/Login'));
-const Signup = lazy(() => import('./pages/auth/Signup'));
-const RecoverPassword = lazy(() => import('./pages/auth/RecoverPassword'));
-const ResetPassword = lazy(() => import('./pages/auth/ResetPassword'));
 const CreateForm = lazy(() => import('./pages/CreateForm'));
 const MyForms = lazy(() => import('./pages/MyForms'));
 const UpdateForm = lazy(() => import('./pages/UpdateForm'));
@@ -36,9 +37,10 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       { path: '/login', element: lazyRoute(<Login />) },
-      { path: '/signup', element: lazyRoute(<Signup />) },
-      { path: '/recover-password', element: lazyRoute(<RecoverPassword />) },
-      { path: '/reset-password/:token', element: lazyRoute(<ResetPassword />) },
+      // Sign-in is Google-only: old password routes go to the login page.
+      ...['/signup', '/register', '/recover-password', '/reset-password/*'].map(
+        path => ({ path, element: <Navigate to="/login" replace /> }),
+      ),
       { path: '/demo', element: lazyRoute(<CreateForm />) },
     ],
   },

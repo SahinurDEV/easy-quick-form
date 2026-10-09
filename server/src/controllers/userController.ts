@@ -1,10 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 import multer from 'multer';
 import catchAsyncError from '../utils/catchAsyncError';
-import {
-  changePasswordSchema,
-  userProfileSchema,
-} from '@form-builder/validation';
+import { userProfileSchema } from '@form-builder/validation';
 import AppError from '../utils/appError';
 import User from '../models/userModel';
 import { compare, hash } from 'bcrypt';
@@ -51,45 +48,6 @@ export const resizeUserPhoto = catchAsyncError(
     next();
   },
 );
-
-export const changePassword = catchAsyncError(
-  async (req: Request, res: Response, next: NextFunction) => {
-    // Validate change password fields
-    const result = await changePasswordSchema.safeParseAsync(req.body);
-    if (!result.success)
-      return next(
-        new AppError(
-          'Validation failed!',
-          400,
-          result.error.flatten().fieldErrors,
-        ),
-      );
-    const { oldPassword, newPassword } = result.data;
-
-    // Get user from collection
-    const foundUser = await User.findById(req.userId)
-      .select('+password')
-      .exec();
-
-    // Check if posted current password is correct
-    if (!foundUser || !(await compare(oldPassword, foundUser.password)))
-      return next(new AppError('Your current password is incorrect', 401));
-
-    // If correct, update password
-    foundUser.password = await hash(newPassword, 12);
-    foundUser.passwordChangedAt = new Date();
-    foundUser.refreshToken = [];
-    await foundUser.save();
-
-   res.clearCookie('refreshToken', clearCookieOptions);
-
-    res.status(200).json({
-      status: 'success',
-      message: 'Password changed successfully',
-    });
-  },
-);
-
 export const updateProfile = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     // Validate user profile fields
@@ -104,11 +62,27 @@ export const updateProfile = catchAsyncError(
       );
 
     const { name, email } = result.data;
+
+    // The email is managed by Google (sign-in matches accounts by email), so
+    // it can't be changed here.
+    if (email !== undefined) {
+      const currentUser = await User.findById(req.userId).exec();
+      if (email.toLowerCase() !== currentUser?.email)
+        return next(
+          new AppError(
+            'Email is managed by Google and cannot be changed',
+            400,
+            {
+              email: ['Email is managed by Google and cannot be changed'],
+            },
+          ),
+        );
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       req.userId,
       {
         name,
-        email,
         avatar: req.file ? req.file.filename : req.body.avatar,
       },
       { new: true },

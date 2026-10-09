@@ -5,7 +5,7 @@ const openapiSpec = {
     title: 'Easy Quick Form API',
     version: '1.0.0',
     description:
-      'REST API for building dynamic forms and tracking their responses.',
+      'REST API for building dynamic forms and tracking their responses. Sign-in is Google-only (POST /auth/google); the old email/password endpoints return 410 Gone.',
     license: { name: 'MIT', url: 'https://opensource.org/licenses/MIT' },
   },
   servers: [{ url: '/api/v1', description: 'API v1' }],
@@ -53,74 +53,6 @@ const openapiSpec = {
     },
   },
   paths: {
-    '/auth/signup': {
-      post: {
-        tags: ['Auth'],
-        summary: 'Register a new user',
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                required: ['name', 'email', 'password', 'cPassword'],
-                properties: {
-                  name: { type: 'string' },
-                  email: { type: 'string', format: 'email' },
-                  password: { type: 'string', format: 'password' },
-                  cPassword: { type: 'string', format: 'password' },
-                },
-              },
-            },
-          },
-        },
-        responses: {
-          201: {
-            description: 'Created',
-            content: {
-              'application/json': {
-                schema: { $ref: '#/components/schemas/AuthResponse' },
-              },
-            },
-          },
-          400: { description: 'Validation error' },
-          409: { description: 'Email already exists' },
-        },
-      },
-    },
-    '/auth/login': {
-      post: {
-        tags: ['Auth'],
-        summary: 'Log in with email and password',
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                required: ['email', 'password'],
-                properties: {
-                  email: { type: 'string', format: 'email' },
-                  password: { type: 'string', format: 'password' },
-                },
-              },
-            },
-          },
-        },
-        responses: {
-          200: {
-            description: 'OK — sets an httpOnly refresh-token cookie',
-            content: {
-              'application/json': {
-                schema: { $ref: '#/components/schemas/AuthResponse' },
-              },
-            },
-          },
-          401: { description: 'Incorrect email or password' },
-          429: { description: 'Too many attempts' },
-        },
-      },
-    },
     '/auth/google': {
       post: {
         tags: ['Auth'],
@@ -167,46 +99,6 @@ const openapiSpec = {
         responses: { 204: { description: 'No Content' } },
       },
     },
-    '/auth/forgot-password': {
-      post: {
-        tags: ['Auth'],
-        summary: 'Send a password-reset email',
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                required: ['email'],
-                properties: { email: { type: 'string', format: 'email' } },
-              },
-            },
-          },
-        },
-        responses: {
-          200: { description: 'Email sent' },
-          404: { description: 'No user with that email' },
-        },
-      },
-    },
-    '/auth/reset-password/{token}': {
-      patch: {
-        tags: ['Auth'],
-        summary: 'Reset password using the emailed token',
-        parameters: [
-          {
-            name: 'token',
-            in: 'path',
-            required: true,
-            schema: { type: 'string' },
-          },
-        ],
-        responses: {
-          200: { description: 'Password reset' },
-          400: { description: 'Invalid or expired token' },
-        },
-      },
-    },
     '/user/profile': {
       get: {
         tags: ['User'],
@@ -232,14 +124,6 @@ const openapiSpec = {
             },
           },
         },
-        responses: { 200: { description: 'OK' }, 401: { description: 'Unauthorized' } },
-      },
-    },
-    '/user/change-password': {
-      patch: {
-        tags: ['User'],
-        summary: 'Change password',
-        security: [{ bearerAuth: [] }],
         responses: { 200: { description: 'OK' }, 401: { description: 'Unauthorized' } },
       },
     },

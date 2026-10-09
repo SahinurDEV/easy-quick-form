@@ -6,7 +6,7 @@ import AppError from '../utils/appError';
 
 export const getAllResponses = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    const form = await Form.findById(req.params.id);
+    const form = await Form.findOne({ _id: req.params.id, user: req.userId });
     if (!form) return next(new AppError('No form found with that ID', 404));
 
     const responses = await FormResponse.find({ form: req.params.id }).exec();

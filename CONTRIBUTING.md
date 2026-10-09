@@ -32,8 +32,8 @@ cd easy-quick-form
 pnpm install
 pnpm -F @form-builder/validation build    # shared schemas, needed before the first run
 
-cp server/.env.example server/.env        # set DATABASE + the two JWT secrets
-cp client/.env.example client/.env        # set VITE_SECRET_KEY to any long random string
+cp server/.env.example server/.env        # DATABASE, the two JWT secrets, GOOGLE_CLIENT_ID/SECRET
+cp client/.env.example client/.env        # VITE_SECRET_KEY (any long random string), VITE_GOOGLE_CLIENT_ID
 
 pnpm dev                                  # client on :4400, API on :8000
 ```
@@ -41,9 +41,15 @@ pnpm dev                                  # client on :4400, API on :8000
 Generate the JWT secrets with
 `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`.
 
-SMTP, Google OAuth and Cloudinary are **optional**. Leave them empty and the app still
-runs; those features are just turned off (emails are skipped, Google sign-in is hidden,
-avatars go to local disk).
+**Sign-in is Google-only**, so you need your own Google OAuth client for local dev: in Google
+Cloud Console create an OAuth client ID of type "Web application", add `http://localhost:4400`
+as an Authorized JavaScript origin (no redirect URIs needed), then put the client ID in
+`GOOGLE_CLIENT_ID` (server) and `VITE_GOOGLE_CLIENT_ID` (client) and the secret in
+`GOOGLE_CLIENT_SECRET` (server only). While the consent screen is in "Testing" mode, add your
+Google account as a test user.
+
+ImgBB/Cloudinary are **optional** (without them avatars go to local disk). SMTP is no longer
+used. API tests don't need Google: they create users directly (see `server/src/test/helpers.ts`).
 
 Prefer containers? `docker compose up --build` starts MongoDB, the API and the client
 (client on `http://localhost:8080`).

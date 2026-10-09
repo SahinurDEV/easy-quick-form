@@ -23,9 +23,8 @@
 
 ## Features
 
-- 🔐 **JWT authentication** with protected routes, refresh tokens, reuse detection and rotation.
-- 🚪 Logout, change password, and delete account.
-- 📧 Transactional emails on signup and password reset (Nodemailer).
+- 🔐 **Sign in with Google** (Google-only auth; no passwords to manage), backed by JWT access tokens and refresh tokens with reuse detection and rotation.
+- 🚪 Logout and delete account.
 - 🖼️ Profile-picture upload with drag-and-drop and cropping.
 - 🧱 **Drag-and-drop form builder** with many element types.
 - 🔎 Full **CRUD** and search over forms.
@@ -33,16 +32,17 @@
 - 🧰 Rich form elements — WYSIWYG editor, calendar, date-range picker, and more.
 - 🪵 Centralized error logging and consistent error handling / user feedback.
 
-> **Note:** profile pictures are uploaded to Cloudinary when the `CLOUDINARY_*` env vars
-> are set, and to the server's local disk otherwise (fine for local development). On
-> Vercel, avatar uploads return `503` until Cloudinary is configured.
+> **Note:** profile pictures are uploaded to ImgBB when `IMGBB_API_KEY` is set, otherwise
+> to Cloudinary when the `CLOUDINARY_*` env vars are set, and otherwise to the server's
+> local disk (fine for local development). On Vercel, avatar uploads return `503` unless
+> ImgBB or Cloudinary is configured.
 
 ## Tech stack
 
 | Layer        | Technologies                                                                                                  |
 | ------------ | ------------------------------------------------------------------------------------------------------------- |
 | **Frontend** | React, TypeScript, Tailwind, ShadcnUI, React Hook Form, Zod, React Router, DND Kit, TanStack Query/Table, Tiptap, React Dropzone, React Easy Crop, Zustand |
-| **Backend**  | Node, Express, TypeScript, Mongoose, Nodemailer, Multer, Sharp, JWT                                            |
+| **Backend**  | Node, Express, TypeScript, Mongoose, Google OAuth, Multer, Sharp, JWT                                          |
 | **Database** | MongoDB                                                                                                        |
 | **Shared**   | Zod validation schemas reused across client and server                                                         |
 
@@ -72,7 +72,10 @@ easy-quick-form/
   …or install globally: `npm install -g pnpm`
 
 - A **MongoDB** database — e.g. a free [MongoDB Atlas](https://www.mongodb.com/atlas/database) cluster.
-- An **SMTP** account for emails — e.g. a free [Brevo](https://www.brevo.com/) server.
+- A **Google OAuth client** (Google Cloud Console → APIs & Services → Credentials → OAuth client ID,
+  type "Web application"). Add `http://localhost:4400` (and `http://localhost:8080` for Docker)
+  as **Authorized JavaScript origins**; no redirect URIs are needed. Sign-in is Google-only, so
+  this is required.
 
 ### Setup
 
@@ -114,7 +117,7 @@ docker compose up --build
 ```
 
 The client is served on `http://localhost:8080`, the API on `http://localhost:8000`.
-Override secrets (JWT, SMTP, Google) via a root `.env` file or your shell.
+Override secrets (JWT, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`) via a root `.env` file or your shell.
 
 ### Testing
 
@@ -165,11 +168,11 @@ How the API runs serverless:
 Environment variables:
 
 - **API:** `DATABASE`, `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`, `NODE_ENV=production`,
-  `CLIENT_URL` (the client origin, for CORS). Optional: `SMTP_*` (emails), `GOOGLE_CLIENT_ID` /
-  `GOOGLE_CLIENT_SECRET` (Google sign-in), `CLOUDINARY_*` (avatar uploads). Without them
-  those features are switched off and the API answers `503` for them.
+  `CLIENT_URL` (the client origin, for CORS), `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`
+  (required: sign-in is Google-only). Optional: `IMGBB_API_KEY` or `CLOUDINARY_*` (avatar
+  uploads; without them uploads answer `503`). The `SMTP_*` variables are no longer used.
 - **Client:** `VITE_BACKEND_BASE_URL` (e.g. `https://<api-domain>/api/v1`), `VITE_SECRET_KEY`,
-  and optionally `VITE_GOOGLE_CLIENT_ID` (shows the Google button when set). `VITE_*` values
+  and `VITE_GOOGLE_CLIENT_ID` (same value as `GOOGLE_CLIENT_ID`). `VITE_*` values
   are baked into the public JS bundle, so never put real secrets in them.
 
 To deploy your own copy: create the two projects with the root directories above, set the
@@ -184,12 +187,13 @@ Base path: `/api/v1`
 
 | Method | Endpoint                       |
 | ------ | ------------------------------ |
-| POST   | `/auth/signup`                 |
-| POST   | `/auth/login`                  |
+| POST   | `/auth/google`                 |
 | GET    | `/auth/refresh`                |
 | GET    | `/auth/logout`                 |
-| POST   | `/auth/forgot-password`        |
-| PATCH  | `/auth/reset-password/:token`  |
+
+Sign-in is Google-only: the former email/password endpoints (`/auth/signup`, `/auth/login`,
+`/auth/forgot-password`, `/auth/reset-password/:token`, `/user/change-password`) return
+`410 Gone`.
 
 </details>
 
@@ -200,7 +204,6 @@ Base path: `/api/v1`
 | ------ | ------------------------- |
 | GET    | `/user/profile`           |
 | PATCH  | `/user/profile`           |
-| PATCH  | `/user/change-password`   |
 | DELETE | `/user/delete-account`    |
 
 </details>

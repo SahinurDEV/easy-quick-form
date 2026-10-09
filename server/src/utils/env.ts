@@ -14,11 +14,6 @@ const envSchema = z.object({
   REFRESH_TOKEN_SECRET: z.string().min(1, 'REFRESH_TOKEN_SECRET is required'),
 
   // Optional integrations — features degrade gracefully when unset.
-  SMTP_HOST: z.string().optional(),
-  SMTP_PORT: z.coerce.number().optional(),
-  SMTP_USERNAME: z.string().optional(),
-  SMTP_PASSWORD: z.string().optional(),
-
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
 
@@ -27,6 +22,8 @@ const envSchema = z.object({
     v => (v === '' ? undefined : v),
     z.string().url().optional(),
   ),
+
+  IMGBB_API_KEY: z.string().optional(),
 
   CLOUDINARY_CLOUD_NAME: z.string().optional(),
   CLOUDINARY_API_KEY: z.string().optional(),

@@ -27,23 +27,9 @@ const createLimiter = (
   });
 };
 
-// 5 login attempts per minute per IP.
+// 5 sign-in attempts per minute per IP.
 export const loginLimiter = createLimiter(
   60 * 1000,
   5,
   'Too many login attempts from this IP, please try again in a minute!',
-);
-
-// 10 new accounts per hour per IP.
-export const signupLimiter = createLimiter(
-  60 * 60 * 1000,
-  10,
-  'Too many accounts created from this IP, please try again later!',
-);
-
-// 5 password-reset requests per hour per IP (limits enumeration & email spam).
-export const forgotPasswordLimiter = createLimiter(
-  60 * 60 * 1000,
-  5,
-  'Too many password reset requests from this IP, please try again later!',
 );
