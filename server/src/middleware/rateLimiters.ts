@@ -18,7 +18,9 @@ const createLimiter = (
     handler: (req, res, _next, options) => {
       logger.warn(
         { method: req.method, url: req.url, ip: req.ip },
-        `Rate limit exceeded: ${(options.message as { message: string }).message}`,
+        `Rate limit exceeded: ${
+          (options.message as { message: string }).message
+        }`,
       );
       res.status(options.statusCode).send(options.message);
     },

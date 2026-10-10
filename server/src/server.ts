@@ -19,7 +19,8 @@ const server = app.listen(env.PORT, () => {
 });
 
 process.on('unhandledRejection', (err: unknown) => {
-  if (err instanceof Error) logger.error(err, 'Unhandled rejection — shutting down');
+  if (err instanceof Error)
+    logger.error(err, 'Unhandled rejection — shutting down');
   server.close(() => {
     process.exit(1);
   });

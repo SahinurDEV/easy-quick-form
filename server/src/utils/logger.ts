@@ -14,8 +14,8 @@ const logger = pino({
     env.NODE_ENV === 'test'
       ? 'silent'
       : env.NODE_ENV === 'production'
-        ? 'info'
-        : 'debug',
+      ? 'info'
+      : 'debug',
   transport:
     env.NODE_ENV === 'development'
       ? {

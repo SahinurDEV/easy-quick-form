@@ -42,7 +42,10 @@ const verifyJWT = catchAsyncError(
       user.passwordChangedAt.getTime() > decoded.iat * 1000
     )
       return next(
-        new AppError('User recently changed password! Please log in again', 401),
+        new AppError(
+          'User recently changed password! Please log in again',
+          401,
+        ),
       );
 
     req.userId = decoded.id;
