@@ -58,8 +58,6 @@ app.use('/api/v1/forms', formRouter);
 app.use(verifyJWT);
 app.use('/api/v1/user', userRouter);
 
-
-
 app.all('*', (req, _res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });

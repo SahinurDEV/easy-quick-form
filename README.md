@@ -39,12 +39,12 @@
 
 ## Tech stack
 
-| Layer        | Technologies                                                                                                  |
-| ------------ | ------------------------------------------------------------------------------------------------------------- |
+| Layer        | Technologies                                                                                                                                               |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Frontend** | React, TypeScript, Tailwind, ShadcnUI, React Hook Form, Zod, React Router, DND Kit, TanStack Query/Table, Tiptap, React Dropzone, React Easy Crop, Zustand |
-| **Backend**  | Node, Express, TypeScript, Mongoose, Google OAuth, Multer, Sharp, JWT                                          |
-| **Database** | MongoDB                                                                                                        |
-| **Shared**   | Zod validation schemas reused across client and server                                                         |
+| **Backend**  | Node, Express, TypeScript, Mongoose, Google OAuth, Multer, Sharp, JWT                                                                                      |
+| **Database** | MongoDB                                                                                                                                                    |
+| **Shared**   | Zod validation schemas reused across client and server                                                                                                     |
 
 ## Project structure
 
@@ -135,20 +135,20 @@ Interactive Swagger UI is served by the API at **`/api/docs`** (e.g.
 
 Run from the repo root:
 
-| Command         | Description                                  |
-| --------------- | -------------------------------------------- |
-| `pnpm dev`      | Start the client and server in watch mode    |
-| `pnpm build`    | Build all workspace packages                 |
-| `pnpm preview`  | Preview the production builds                 |
+| Command        | Description                               |
+| -------------- | ----------------------------------------- |
+| `pnpm dev`     | Start the client and server in watch mode |
+| `pnpm build`   | Build all workspace packages              |
+| `pnpm preview` | Preview the production builds             |
 
 ## Deploying to Vercel
 
 The live demo runs as two Vercel projects built from this monorepo (both are connected
 to the GitHub repo, so every push to `main` redeploys them):
 
-| Project               | Root directory | What it is                                                                                         |
-| --------------------- | -------------- | -------------------------------------------------------------------------------------------------- |
-| `easy-quick-form`     | `client`       | Vite static build; `client/vercel.json` adds the SPA fallback rewrite to `index.html`               |
+| Project               | Root directory | What it is                                                                                                          |
+| --------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `easy-quick-form`     | `client`       | Vite static build; `client/vercel.json` adds the SPA fallback rewrite to `index.html`                               |
 | `easy-quick-form-api` | `server`       | Express app as a single serverless function (`server/api/index.js`); `server/vercel.json` rewrites every path to it |
 
 Both projects use Node.js 24.x, keep **"Include files outside the root directory"**
@@ -185,11 +185,11 @@ Base path: `/api/v1`
 <details>
 <summary><b>Auth</b></summary>
 
-| Method | Endpoint                       |
-| ------ | ------------------------------ |
-| POST   | `/auth/google`                 |
-| GET    | `/auth/refresh`                |
-| GET    | `/auth/logout`                 |
+| Method | Endpoint        |
+| ------ | --------------- |
+| POST   | `/auth/google`  |
+| GET    | `/auth/refresh` |
+| GET    | `/auth/logout`  |
 
 Sign-in is Google-only: the former email/password endpoints (`/auth/signup`, `/auth/login`,
 `/auth/forgot-password`, `/auth/reset-password/:token`, `/user/change-password`) return
@@ -200,35 +200,35 @@ Sign-in is Google-only: the former email/password endpoints (`/auth/signup`, `/a
 <details>
 <summary><b>User</b></summary>
 
-| Method | Endpoint                  |
-| ------ | ------------------------- |
-| GET    | `/user/profile`           |
-| PATCH  | `/user/profile`           |
-| DELETE | `/user/delete-account`    |
+| Method | Endpoint               |
+| ------ | ---------------------- |
+| GET    | `/user/profile`        |
+| PATCH  | `/user/profile`        |
+| DELETE | `/user/delete-account` |
 
 </details>
 
 <details>
 <summary><b>Forms</b></summary>
 
-| Method | Endpoint                                              |
-| ------ | ---------------------------------------------------- |
-| GET    | `/forms?page=0&pageSize=10&sort=-name&search=form`   |
-| GET    | `/forms/:id`                                         |
-| POST   | `/forms`                                             |
-| PATCH  | `/forms/:id`                                         |
-| PATCH  | `/forms/bulk-delete`                                 |
-| DELETE | `/forms/:id`                                         |
+| Method | Endpoint                                           |
+| ------ | -------------------------------------------------- |
+| GET    | `/forms?page=0&pageSize=10&sort=-name&search=form` |
+| GET    | `/forms/:id`                                       |
+| POST   | `/forms`                                           |
+| PATCH  | `/forms/:id`                                       |
+| PATCH  | `/forms/bulk-delete`                               |
+| DELETE | `/forms/:id`                                       |
 
 </details>
 
 <details>
 <summary><b>Form responses</b></summary>
 
-| Method | Endpoint                   |
-| ------ | -------------------------- |
-| GET    | `/forms/:id/responses`     |
-| POST   | `/forms/:id/responses`     |
+| Method | Endpoint               |
+| ------ | ---------------------- |
+| GET    | `/forms/:id/responses` |
+| POST   | `/forms/:id/responses` |
 
 </details>
 

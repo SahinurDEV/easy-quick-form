@@ -25,7 +25,11 @@ module.exports = {
     // Allow destructuring a prop purely to exclude it from `...props`.
     '@typescript-eslint/no-unused-vars': [
       'error',
-      { ignoreRestSiblings: true, argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      {
+        ignoreRestSiblings: true,
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      },
     ],
     // Discourage `any`, but don't fail the build over it.
     '@typescript-eslint/no-explicit-any': 'warn',

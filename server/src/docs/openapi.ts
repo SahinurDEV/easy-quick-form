@@ -104,7 +104,10 @@ const openapiSpec = {
         tags: ['User'],
         summary: 'Get the current user profile',
         security: [{ bearerAuth: [] }],
-        responses: { 200: { description: 'OK' }, 401: { description: 'Unauthorized' } },
+        responses: {
+          200: { description: 'OK' },
+          401: { description: 'Unauthorized' },
+        },
       },
       patch: {
         tags: ['User'],
@@ -124,7 +127,10 @@ const openapiSpec = {
             },
           },
         },
-        responses: { 200: { description: 'OK' }, 401: { description: 'Unauthorized' } },
+        responses: {
+          200: { description: 'OK' },
+          401: { description: 'Unauthorized' },
+        },
       },
     },
     '/user/delete-account': {
@@ -168,16 +174,29 @@ const openapiSpec = {
         tags: ['Forms'],
         summary: 'Get a form by id',
         parameters: [
-          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' },
+          },
         ],
-        responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } },
+        responses: {
+          200: { description: 'OK' },
+          404: { description: 'Not found' },
+        },
       },
       patch: {
         tags: ['Forms'],
         summary: 'Update a form',
         security: [{ bearerAuth: [] }],
         parameters: [
-          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' },
+          },
         ],
         responses: { 200: { description: 'OK' } },
       },
@@ -186,7 +205,12 @@ const openapiSpec = {
         summary: 'Delete a form',
         security: [{ bearerAuth: [] }],
         parameters: [
-          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' },
+          },
         ],
         responses: { 204: { description: 'No Content' } },
       },
@@ -197,7 +221,12 @@ const openapiSpec = {
         summary: 'List responses for a form',
         security: [{ bearerAuth: [] }],
         parameters: [
-          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' },
+          },
         ],
         responses: { 200: { description: 'OK' } },
       },
@@ -205,7 +234,12 @@ const openapiSpec = {
         tags: ['Form Responses'],
         summary: 'Submit a response to a form',
         parameters: [
-          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' },
+          },
         ],
         responses: { 201: { description: 'Created' } },
       },
