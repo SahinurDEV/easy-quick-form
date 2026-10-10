@@ -116,3 +116,16 @@ Use the [issue templates](https://github.com/SahinurDEV/easy-quick-form/issues/n
 For security issues, **do not** open a public issue — see [SECURITY.md](./SECURITY.md).
 
 Thank you for helping make Easy Quick Form better! 🎉
+## Formatting
+
+Before submitting a pull request, format the codebase using:
+
+```bash
+pnpm format
+```
+
+To check formatting without changing files, run:
+
+```bash
+pnpm format:check
+```
