@@ -50,7 +50,11 @@ export default function MyForms() {
     placeholderData: keepPreviousData,
   });
 
-  const mutation = useMutation({
+  const {
+    mutate: toggleActive,
+    isPending: isTogglePending,
+    variables: toggleVariables,
+  } = useMutation({
     mutationFn: ({ formId, isActive }: { formId: string; isActive: boolean }) =>
       axiosPrivate.patch('/forms/' + formId, { isActive }),
     onSuccess: () => {
@@ -107,11 +111,10 @@ export default function MyForms() {
           <Switch
             checked={row.original.isActive}
             disabled={
-              mutation.isPending &&
-              mutation.variables?.formId === row.original._id
+              isTogglePending && toggleVariables?.formId === row.original._id
             }
             onCheckedChange={checked => {
-              mutation.mutate({ formId: row.original._id, isActive: checked });
+              toggleActive({ formId: row.original._id, isActive: checked });
             }}
             onClick={e => e.stopPropagation()}
           />
@@ -146,7 +149,7 @@ export default function MyForms() {
         cell: ({ row }) => <DataTableRowActions formId={row.original._id} />,
       },
     ],
-    [mutation],
+    [toggleActive, isTogglePending, toggleVariables],
   );
 
   if (isPending) return <DataTableShimmer columns={4} />;

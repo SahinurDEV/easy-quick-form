@@ -114,8 +114,8 @@ export default function GeneratedForm() {
         question: label,
         answer:
           options && type !== 'checklist'
-            ? options.find(({ value }) => value === values[id])?.label ?? null
-            : values[id] ?? null,
+            ? (options.find(({ value }) => value === values[id])?.label ?? null)
+            : (values[id] ?? null),
       }));
 
     mutation.mutate(response);
