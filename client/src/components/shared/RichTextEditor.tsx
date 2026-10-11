@@ -83,12 +83,12 @@ const EditorToolbar = ({ className = '', editor }: Props) => {
   const selectValue = editor.isActive('paragraph')
     ? 'paragraph'
     : editor.isActive('heading', { level: 1 })
-    ? '1'
-    : editor.isActive('heading', { level: 2 })
-    ? '2'
-    : editor.isActive('heading', { level: 3 })
-    ? '3'
-    : undefined;
+      ? '1'
+      : editor.isActive('heading', { level: 2 })
+        ? '2'
+        : editor.isActive('heading', { level: 3 })
+          ? '3'
+          : undefined;
 
   return (
     <div
