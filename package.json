@@ -33,7 +33,7 @@
   },
   "homepage": "https://easy-quick-form.vercel.app",
   "devDependencies": {
-    "prettier": "^3.1.1"
+    "prettier": "^3.9.9"
   },
   "pnpm": {
     "overrides": {
