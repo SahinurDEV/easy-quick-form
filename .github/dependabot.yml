@@ -8,8 +8,42 @@ updates:
     groups:
       # Batch routine updates into a single PR to reduce noise.
       dependencies:
+        applies-to: version-updates
         patterns: ['*']
         update-types: ['minor', 'patch']
+    # Major upgrades that need a dedicated migration. Only version updates are
+    # ignored here; Dependabot security updates are still opened for these.
+    ignore:
+      # React 19 migration (JSX namespace, peer deps)
+      - dependency-name: 'react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react-dom'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@types/react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@types/react-dom'
+        update-types: ['version-update:semver-major']
+      # Tiptap 3 must be upgraded as a whole
+      - dependency-name: '@tiptap/*'
+        update-types: ['version-update:semver-major']
+      # Vitest 4 requires Vite 6+
+      - dependency-name: 'vitest'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'vite'
+        update-types: ['version-update:semver-major']
+      # Tailwind 4 migration (tailwind-merge 3 targets Tailwind 4)
+      - dependency-name: 'tailwindcss'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'tailwind-merge'
+        update-types: ['version-update:semver-major']
+      # Express 5 migration (router path syntax, typings)
+      - dependency-name: 'express'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@types/express'
+        update-types: ['version-update:semver-major']
+      # react-day-picker 9+/10 rewrite of the Calendar component
+      - dependency-name: 'react-day-picker'
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: github-actions
     directory: '/'
