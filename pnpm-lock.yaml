@@ -328,8 +328,8 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0
       express-rate-limit:
-        specifier: ^7.1.1
-        version: 7.1.1(express@4.22.3)
+        specifier: ^8.7.1
+        version: 8.7.1(express@4.22.3)
       google-auth-library:
         specifier: ^9.2.0
         version: 9.2.0
@@ -2977,11 +2977,11 @@ packages:
     resolution: {integrity: sha512-PZBs5nwhD6ek9ZuP+W2xmpvcrHwXZxD5GdieX2dsjPbAbH4azOkrHbycBud2QRU+YQF1CT+pki/lZGedHgo/dQ==}
     engines: {node: '>=10'}
 
-  express-rate-limit@7.1.1:
-    resolution: {integrity: sha512-o5ye/a4EHCPQPju25Y4HChHybrCM9v37QtQDqXUDZGuD+HB7Cbu8ZhJP6/9RORcSNtkCpnEssa6oUgJgzc7ckQ==}
+  express-rate-limit@8.7.1:
+    resolution: {integrity: sha512-2FXbqkygil3mZiXzEtM0IjE/UBmBNot0J1GEVrJT4JbrvwOSoEtqtO+wHbiMQELWe1eNvHoYRg2dkjOid+6JkA==}
     engines: {node: '>= 16'}
     peerDependencies:
-      express: ^4 || ^5
+      express: '>= 4.11'
 
   express@4.22.3:
     resolution: {integrity: sha512-Bdcs4+3qlpVlx2NRn6fgX2Ue2/gGRaPeawebgclM0ERSCqDpA+owF1fdPwjJUTAJWMTuAaxjDf+hzb0/4eKvvw==}
@@ -7734,9 +7734,13 @@ snapshots:
 
   express-mongo-sanitize@2.2.0: {}
 
-  express-rate-limit@7.1.1(express@4.22.3):
+  express-rate-limit@8.7.1(express@4.22.3):
     dependencies:
+      debug: 4.4.3
       express: 4.22.3
+      ip-address: 10.7.3
+    transitivePeerDependencies:
+      - supports-color
 
   express@4.22.3:
     dependencies:
