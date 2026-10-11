@@ -33,7 +33,9 @@ export const loginSchema = z.object({
   email: z
     .string({ required_error: 'Please provide your email' })
     .email('Please enter a valid email'),
-  password: z.string({ required_error: 'Please provide a password' }).min(1, 'Please provide a password'),
+  password: z
+    .string({ required_error: 'Please provide a password' })
+    .min(1, 'Please provide a password'),
 });
 
 export const forgotPasswordSchema = z.object({

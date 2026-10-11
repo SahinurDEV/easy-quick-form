@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "pnpm --stream -r run dev",
     "build": "pnpm --stream -r run build",
-    "preview": "pnpm --stream -r run preview"
+    "preview": "pnpm --stream -r run preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [
     "mern",
@@ -31,7 +33,7 @@
   },
   "homepage": "https://easy-quick-form.vercel.app",
   "devDependencies": {
-    "prettier": "^3.0.3"
+    "prettier": "^3.1.1"
   },
   "pnpm": {
     "overrides": {
