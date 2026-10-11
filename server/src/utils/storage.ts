@@ -8,8 +8,8 @@ import logger from './logger';
 
 const cloudinaryConfigured = Boolean(
   env.CLOUDINARY_CLOUD_NAME &&
-    env.CLOUDINARY_API_KEY &&
-    env.CLOUDINARY_API_SECRET,
+  env.CLOUDINARY_API_KEY &&
+  env.CLOUDINARY_API_SECRET,
 );
 
 if (cloudinaryConfigured) {
