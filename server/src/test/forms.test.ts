@@ -94,4 +94,13 @@ describe('Forms API: ownership', () => {
       .set(auth(ownerToken));
     expect(del.status).toBe(204);
   });
+  it('returns 400 when creating a form without elements', async () => {
+    const res = await request(app)
+      .post('/api/v1/forms')
+      .set(auth(ownerToken))
+      .send({ name: 'Form without elements' });
+
+    expect(res.status).toBe(400);
+    expect(res.body.data.errors.elements).toBeDefined();
+  });
 });

@@ -1,4 +1,5 @@
 import { type NextFunction, type Request, type Response } from 'express';
+import { createFormSchema } from '@form-builder/validation';
 import catchAsyncError from '../utils/catchAsyncError';
 import Form from '../models/formModel';
 import AppError from '../utils/appError';
@@ -62,17 +63,18 @@ export const getForm = catchAsyncError(
 
 export const createForm = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { name, elements } = req.body;
+    const result = await createFormSchema.safeParseAsync(req.body);
 
-    if (!name)
-      return next(new AppError('Please provide the name of the form!', 400));
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+      return next(new AppError('Validation failed!', 400, fieldErrors));
+    }
 
-    if (elements.length === 0)
-      return next(new AppError('Please add some elements to the form!', 400));
+    const { name, elements } = result.data;
 
     const newForm = await Form.create({
       name,
-      elements: elements ?? [],
+      elements,
       user: req.userId,
     });
 
