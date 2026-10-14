@@ -101,6 +101,6 @@ describe('Forms API: ownership', () => {
       .send({ name: 'Form without elements' });
 
     expect(res.status).toBe(400);
-    expect(res.body.data.errors.elements).toBeDefined();
+    expect(res.body.errors.elements).toBeDefined();
   });
 });
