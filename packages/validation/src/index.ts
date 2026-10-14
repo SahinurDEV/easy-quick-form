@@ -81,3 +81,15 @@ export const userProfileSchema = z.object({
     .email('Please enter a valid email')
     .optional(),
 });
+
+export const createFormSchema = z.object({
+  name: z
+    .string({ required_error: 'Please provide a form name' })
+    .trim()
+    .min(1, 'Please provide a form name'),
+  elements: z
+    .array(z.unknown(), {
+      required_error: 'Please provide form elements',
+    })
+    .min(1, 'Please provide at least one form element'),
+});
