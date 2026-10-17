@@ -36,7 +36,7 @@ export default function useAxiosPrivate() {
 
             return axiosPrivate(prevRequest);
           }
-        } catch (err) {
+        } catch {
           const href =
             pathname === '/'
               ? '/login'
