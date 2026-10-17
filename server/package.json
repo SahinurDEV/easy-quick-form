@@ -33,7 +33,7 @@
     "sharp": "^0.35.5",
     "swagger-ui-express": "^5.0.1",
     "typescript": "^5.2.2",
-    "uuid": "^9.0.1",
+    "uuid": "^14.0.3",
     "zod": "^3.25.76"
   },
   "devDependencies": {
