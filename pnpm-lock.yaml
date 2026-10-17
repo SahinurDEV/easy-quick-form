@@ -168,8 +168,8 @@ importers:
         specifier: ^14.2.3
         version: 14.2.3(react@18.3.1)
       react-easy-crop:
-        specifier: ^5.0.2
-        version: 5.0.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^6.2.4
+        version: 6.2.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-hook-form:
         specifier: ^7.89.0
         version: 7.90.0(@types/react@18.2.31)(react@18.3.1)
@@ -4478,8 +4478,8 @@ packages:
     peerDependencies:
       react: '>= 16.8 || 18.0.0'
 
-  react-easy-crop@5.0.2:
-    resolution: {integrity: sha512-j4A/0s0v/Gx5YGXvw3SOFIMmRk5YCdob2ABL5cD00Q9HQPKIz6tkCYLdj0RMO0REPtCAOsZ2ZZLI6fUofiDP6w==}
+  react-easy-crop@6.2.4:
+    resolution: {integrity: sha512-OWdnFYctzUNlekjob+bQfloG9wyhIBkkmeISnM5XVE4Byqn0jmVxDF7oz85ovUF+EIPQyj0yAHbBEFtnxwGv4g==}
     peerDependencies:
       react: '>=16.4.0'
       react-dom: '>=16.4.0'
@@ -5100,9 +5100,6 @@ packages:
         optional: true
       '@swc/wasm':
         optional: true
-
-  tslib@2.0.1:
-    resolution: {integrity: sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==}
 
   tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
@@ -9652,12 +9649,11 @@ snapshots:
       prop-types: 15.8.1
       react: 18.3.1
 
-  react-easy-crop@5.0.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  react-easy-crop@6.2.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       normalize-wheel: 1.0.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      tslib: 2.0.1
 
   react-hook-form@7.90.0(@types/react@18.2.31)(react@18.3.1):
     dependencies:
@@ -10433,8 +10429,6 @@ snapshots:
       yn: 3.1.1
     optionalDependencies:
       '@swc/core': 1.15.40(@swc/helpers@0.5.23)
-
-  tslib@2.0.1: {}
 
   tslib@2.6.2: {}
 
