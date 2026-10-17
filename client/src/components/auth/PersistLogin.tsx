@@ -21,7 +21,7 @@ export default function PersistLogin() {
         try {
           initialized.current = true;
           await refresh();
-        } catch (error) {
+        } catch {
           const href =
             pathname === '/'
               ? '/login'
@@ -30,12 +30,16 @@ export default function PersistLogin() {
           setAuth(initialAuthState);
           navigate(href, { replace: true });
         } finally {
-          isMounted && setIsLoading(false);
+          if (isMounted) setIsLoading(false);
         }
       }
     };
 
-    !auth?.accessToken && persist ? verifyRefreshToken() : setIsLoading(false);
+    if (!auth?.accessToken && persist) {
+      verifyRefreshToken();
+    } else {
+      setIsLoading(false);
+    }
 
     return () => {
       isMounted = false;

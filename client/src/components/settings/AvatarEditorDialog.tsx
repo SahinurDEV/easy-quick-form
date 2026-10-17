@@ -179,7 +179,7 @@ export default function AvatarEditorDialog({ children, closeHandler }: Props) {
                     onError: () => toast.error('Error uploading avatar'),
                   },
                 );
-              } catch (e) {
+              } catch {
                 toast.error('Something went wrong!');
               }
             }}

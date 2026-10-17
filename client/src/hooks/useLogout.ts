@@ -18,7 +18,7 @@ export default function useLogout() {
       removeCookie('userDetails');
       toast.success('Logged out successfully');
       navigate('/login');
-    } catch (err) {
+    } catch {
       toast.error('Something went wrong!');
     }
   };
