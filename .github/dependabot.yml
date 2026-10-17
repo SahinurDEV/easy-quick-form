@@ -44,6 +44,9 @@ updates:
       # react-day-picker 9+/10 rewrite of the Calendar component
       - dependency-name: 'react-day-picker'
         update-types: ['version-update:semver-major']
+      # eslint-plugin-react-refresh 0.5+ requires ESLint 9 (flat config)
+      - dependency-name: 'eslint-plugin-react-refresh'
+        versions: ['>=0.5.0']
 
   - package-ecosystem: github-actions
     directory: '/'
