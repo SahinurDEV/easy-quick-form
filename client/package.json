@@ -67,7 +67,7 @@
     "@tailwindcss/typography": "^0.5.20",
     "@tanstack/eslint-plugin-query": "^5.104.1",
     "@tanstack/react-query-devtools": "^5.104.1",
-    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",
     "@types/crypto-js": "^4.2.2",
