@@ -1,11 +1,11 @@
-import { type ObjectId, Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 import type { FormElementsType } from '@form-builder/validation/types';
 
 interface IForm {
   name: string;
   elements: FormElementsType[];
   isActive: boolean;
-  user: ObjectId;
+  user: Types.ObjectId;
 }
 
 const formSchema = new Schema<IForm>(

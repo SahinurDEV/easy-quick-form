@@ -1,7 +1,7 @@
-import { type ObjectId, Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 
 interface IFormResponse {
-  form: ObjectId;
+  form: Types.ObjectId;
   response: {
     elementType: string;
     question: string;

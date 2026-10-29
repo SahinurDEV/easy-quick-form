@@ -1,5 +1,6 @@
 import { type NextFunction, type Request, type Response } from 'express';
 import { createFormSchema } from '@form-builder/validation';
+import type { FormElementsType } from '@form-builder/validation/types';
 import catchAsyncError from '../utils/catchAsyncError';
 import Form from '../models/formModel';
 import FormResponse from '../models/formResponseModel';
@@ -10,7 +11,8 @@ export const getAllForms = catchAsyncError(
     const page = Number(req.query.page) || 0;
     const pageSize = Number(req.query.pageSize) || 10;
     const skip = page * pageSize;
-    const searchQuery = req.query.search;
+    const searchQuery =
+      typeof req.query.search === 'string' ? req.query.search : undefined;
 
     const query = searchQuery
       ? { user: req.userId, name: { $regex: searchQuery, $options: 'i' } }
@@ -82,7 +84,8 @@ export const createForm = catchAsyncError(
 
     const newForm = await Form.create({
       name,
-      elements,
+      // Validation only checks that elements is a non-empty array.
+      elements: elements as FormElementsType[],
       user: req.userId,
     });
 

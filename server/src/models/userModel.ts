@@ -53,9 +53,8 @@ const userSchema = new Schema<IUser>(
   { timestamps: true },
 );
 
-userSchema.pre(/^find/, function (this: Query<IUser | IUser[], IUser>, next) {
+userSchema.pre(/^find/, function (this: Query<IUser | IUser[], IUser>) {
   this.where({ isDeleted: false });
-  next();
 });
 
 export default model<IUser>('User', userSchema);
