@@ -2,6 +2,7 @@ import { type NextFunction, type Request, type Response } from 'express';
 import { createFormSchema } from '@form-builder/validation';
 import catchAsyncError from '../utils/catchAsyncError';
 import Form from '../models/formModel';
+import FormResponse from '../models/formResponseModel';
 import AppError from '../utils/appError';
 
 export const getAllForms = catchAsyncError(
@@ -41,7 +42,14 @@ export const deleteForms = catchAsyncError(
     if (!forms)
       return next(new AppError('Please provide list of form id!', 400));
 
-    await Form.deleteMany({ _id: { $in: forms }, user: req.userId });
+    // Only touch forms the user owns, and remove their responses too.
+    const ownedForms = await Form.find({
+      _id: { $in: forms },
+      user: req.userId,
+    }).distinct('_id');
+
+    await Form.deleteMany({ _id: { $in: ownedForms } });
+    await FormResponse.deleteMany({ form: { $in: ownedForms } });
 
     res.sendStatus(204);
   },
@@ -114,6 +122,8 @@ export const deleteForm = catchAsyncError(
       user: req.userId,
     });
     if (!form) return next(new AppError('No form found with that ID', 404));
+
+    await FormResponse.deleteMany({ form: req.params.id });
 
     res.sendStatus(204);
   },
