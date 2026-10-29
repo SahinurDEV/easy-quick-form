@@ -6,6 +6,10 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/SahinurDEV/easy-quick-form/actions/workflows/ci.yml"><img src="https://github.com/SahinurDEV/easy-quick-form/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+</p>
+
+<p align="center">
   <b>🚀 Live demo: <a href="https://easy-quick-form.vercel.app">easy-quick-form.vercel.app</a></b>
   &nbsp;·&nbsp; API: <a href="https://easy-quick-form-api.vercel.app/api/docs/">easy-quick-form-api.vercel.app/api/docs</a>
 </p>

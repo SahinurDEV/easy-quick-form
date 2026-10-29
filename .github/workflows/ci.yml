@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Build validation package
+        run: pnpm -F @form-builder/validation build
+
+      - name: Server type-check
+        run: pnpm -F @form-builder/server exec tsc --noEmit
+
+      - name: Server tests
+        run: pnpm -F @form-builder/server test
+
+      - name: Client lint
+        run: pnpm -F @form-builder/client lint
+
+      - name: Client tests
+        run: pnpm -F @form-builder/client test
+
+      - name: Client build
+        run: pnpm -F @form-builder/client build
