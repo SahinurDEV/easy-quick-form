@@ -220,8 +220,8 @@ importers:
         specifier: ^18.2.14
         version: 18.2.14
       '@types/uuid':
-        specifier: ^9.0.6
-        version: 9.0.6
+        specifier: ^11.0.0
+        version: 11.0.0
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.72.0
         version: 8.72.0(@typescript-eslint/parser@8.72.0(eslint@8.57.1)(typescript@5.2.2))(eslint@8.57.1)(typescript@5.2.2)
@@ -401,8 +401,8 @@ importers:
         specifier: ^4.1.8
         version: 4.1.8
       '@types/uuid':
-        specifier: ^9.0.6
-        version: 9.0.6
+        specifier: ^11.0.0
+        version: 11.0.0
       mongodb-memory-server:
         specifier: ^11.3.0
         version: 11.3.0(socks@2.8.10)
@@ -2253,8 +2253,9 @@ packages:
   '@types/use-sync-external-store@0.0.6':
     resolution: {integrity: sha512-zFDAD+tlpf2r4asuHEj0XH6pY6i0g5NeAHPn+15wk3BV6JA69eERFXC1gyGThDkVa1zCyKr5jox1+2LbV/AMLg==}
 
-  '@types/uuid@9.0.6':
-    resolution: {integrity: sha512-BT2Krtx4xaO6iwzwMFUYvWBWkV2pr37zD68Vmp1CDV196MzczBRxuEpD6Pr395HAgebC/co7hOphs53r8V7jew==}
+  '@types/uuid@11.0.0':
+    resolution: {integrity: sha512-HVyk8nj2m+jcFRNazzqyVKiZezyhDKrGUA3jlEcg/nZ6Ms+qHwocba1Y/AaVaznJTAM9xpdFSh+ptbNrhOGvZA==}
+    deprecated: This is a stub types definition. uuid provides its own type definitions, so you do not need this installed.
 
   '@types/webidl-conversions@7.0.3':
     resolution: {integrity: sha512-CiJJvcRtIgzadHCYXw7dqEnMNRjhGZlYK05Mj9OyktqV8uVT8fD2BFOB7S1uwBE3Kj2Z+4UyPmFw/Ixgw/LAlA==}
@@ -3495,6 +3496,10 @@ packages:
 
   ip-address@10.7.3:
     resolution: {integrity: sha512-A1kdq/tSb5QjvKvAMgIoEvDBIgL7qaqVP/jkvSwYYRZ9iEzvPpopxp2wQfu3SuZRHtpHNxMn8Fs0bS+gf5Xmwg==}
+    engines: {node: '>= 12'}
+
+  ip-address@10.7.5:
+    resolution: {integrity: sha512-t2v0rkILYv9WXmSL7TpAaU3HXgaFYOPUcH3QHgwQ++gpJuH3bqyMy4Fvt/DJCTKwzH3Cf+bAp5W/mFL39KPLzA==}
     engines: {node: '>= 12'}
 
   ipaddr.js@1.9.1:
@@ -6990,7 +6995,9 @@ snapshots:
 
   '@types/use-sync-external-store@0.0.6': {}
 
-  '@types/uuid@9.0.6': {}
+  '@types/uuid@11.0.0':
+    dependencies:
+      uuid: 14.0.3
 
   '@types/webidl-conversions@7.0.3': {}
 
@@ -8510,6 +8517,9 @@ snapshots:
 
   ip-address@10.7.3: {}
 
+  ip-address@10.7.5:
+    optional: true
+
   ipaddr.js@1.9.1: {}
 
   is-array-buffer@3.0.2:
@@ -9842,7 +9852,7 @@ snapshots:
 
   socks@2.8.10:
     dependencies:
-      ip-address: 10.7.3
+      ip-address: 10.7.5
       smart-buffer: 4.2.0
     optional: true
 
