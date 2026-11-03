@@ -36,7 +36,7 @@
     "@radix-ui/react-tooltip": "^1.4.1",
     "@react-oauth/google": "^0.13.5",
     "@tanstack/react-query": "^5.104.5",
-    "@tanstack/react-table": "^8.10.7",
+    "@tanstack/react-table": "^9.3.1",
     "@tiptap/extension-placeholder": "^2.27.3",
     "@tiptap/extension-typography": "^2.27.3",
     "@tiptap/extension-underline": "^2.27.3",
