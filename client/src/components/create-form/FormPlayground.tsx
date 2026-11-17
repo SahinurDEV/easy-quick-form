@@ -17,7 +17,7 @@ import { restrictToParentElement } from '@dnd-kit/modifiers';
 import FormElementCard from './FormElementCard';
 import { KeyboardSensor, PointerSensor } from '../../lib/dndKitSensors';
 import { ScrollArea } from '../ui/ScrollArea';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFormPlaygroundStore } from '../../stores/formPlaygroundStore';
 
 interface Props {
@@ -48,12 +48,15 @@ export default function FormPlayground({
   );
 
   const cardsEndRef = useRef<HTMLDivElement>(null);
-  if (cardsEndRef.current && isDropped) {
-    cardsEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    setTimeout(() => {
-      resetIsDropped();
-    }, 500);
-  }
+
+  // Scroll to the newly dropped element after it has rendered. This used to
+  // run during render, which scheduled a new timeout on every re-render.
+  useEffect(() => {
+    if (!isDropped) return;
+    cardsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const timeout = setTimeout(resetIsDropped, 500);
+    return () => clearTimeout(timeout);
+  }, [isDropped, resetIsDropped]);
 
   return (
     <DndContext

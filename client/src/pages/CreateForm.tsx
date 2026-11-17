@@ -9,7 +9,7 @@ import {
   FormElementButton,
   FormElementButtonProps,
 } from '../components/create-form/DraggableButton';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import FormPlayground from '../components/create-form/FormPlayground';
 import Input from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
@@ -52,6 +52,7 @@ export default function CreateForm({ formType = 'add', form }: Props) {
   const [activeButton, setActiveButton] =
     useState<FormElementButtonProps | null>(null);
   const [isDropped, setIsDropped] = useState(false);
+  const resetIsDropped = useCallback(() => setIsDropped(false), []);
 
   const addFormElement = useFormPlaygroundStore(state => state.addFormElement);
   const removeAllFormElements = useFormPlaygroundStore(
@@ -171,7 +172,7 @@ export default function CreateForm({ formType = 'add', form }: Props) {
           ) : (
             <FormPlayground
               isDropped={isDropped}
-              resetIsDropped={() => setIsDropped(false)}
+              resetIsDropped={resetIsDropped}
               isUpdate={formType === 'edit'}
             />
           )}

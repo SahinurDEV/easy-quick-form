@@ -18,11 +18,8 @@ interface Props {
 }
 
 export function DatePicker({ field, required = false }: Props) {
-  const [date, setDate] = React.useState<Date>();
-
-  React.useEffect(() => {
-    setDate(field?.value ?? null);
-  }, [field?.value]);
+  const [localDate, setDate] = React.useState<Date>();
+  const date: Date | undefined = field ? (field.value ?? undefined) : localDate;
 
   return (
     <Popover>

@@ -18,11 +18,10 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function DateRangePicker({ className, field }: Props) {
-  const [date, setDate] = React.useState<DateRange | undefined>();
-
-  React.useEffect(() => {
-    setDate(field?.value ?? null);
-  }, [field?.value]);
+  const [localDate, setDate] = React.useState<DateRange | undefined>();
+  const date: DateRange | undefined = field
+    ? (field.value ?? undefined)
+    : localDate;
 
   return (
     <div className={cn('grid gap-2', className)}>
