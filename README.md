@@ -1,29 +1,80 @@
 <h1 align="center">Easy Quick Form</h1>
 
 <p align="center">
-  A full-stack MERN application for building dynamic forms with a drag-and-drop
-  interface, and for tracking and viewing the responses they receive.
+  <b>Open-source, self-hostable drag-and-drop form builder</b> — a free Google Forms /
+  Typeform alternative built with React, TypeScript, Express and MongoDB.
 </p>
 
 <p align="center">
   <a href="https://github.com/SahinurDEV/easy-quick-form/actions/workflows/ci.yml"><img src="https://github.com/SahinurDEV/easy-quick-form/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/SahinurDEV/easy-quick-form/stargazers"><img src="https://img.shields.io/github/stars/SahinurDEV/easy-quick-form?style=flat&logo=github" alt="GitHub stars" /></a>
+  <a href="https://github.com/SahinurDEV/easy-quick-form/network/members"><img src="https://img.shields.io/github/forks/SahinurDEV/easy-quick-form?style=flat" alt="Forks" /></a>
+  <a href="https://github.com/SahinurDEV/easy-quick-form/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22"><img src="https://img.shields.io/github/issues/SahinurDEV/easy-quick-form/good%20first%20issue?color=7057ff&label=good%20first%20issues" alt="Good first issues" /></a>
+  <a href="https://github.com/SahinurDEV/easy-quick-form/commits/main"><img src="https://img.shields.io/github/last-commit/SahinurDEV/easy-quick-form" alt="Last commit" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License" /></a>
 </p>
 
 <p align="center">
-  <b>🚀 Live demo: <a href="https://easy-quick-form.vercel.app">easy-quick-form.vercel.app</a></b>
-  &nbsp;·&nbsp; API: <a href="https://easy-quick-form-api.vercel.app/api/docs/">easy-quick-form-api.vercel.app/api/docs</a>
+  <a href="https://easy-quick-form.vercel.app"><b>🚀 Live demo</b></a>
+  &nbsp;·&nbsp;
+  <a href="#-quick-start"><b>⚡ Quick start</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://easy-quick-form-api.vercel.app/api/docs/"><b>📚 API docs</b></a>
+  &nbsp;·&nbsp;
+  <a href="./CONTRIBUTING.md"><b>🤝 Contribute</b></a>
 </p>
 
+<!--
+  TODO(maintainer): add a 10–20 s demo GIF (build a form → share → view responses)
+  at docs/demo.gif and uncomment the block below. A demo GIF is the single biggest
+  driver of stars for UI projects.
+
 <p align="center">
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg" />
+  <img src="./docs/demo.gif" alt="Building a form with drag and drop in Easy Quick Form" width="900" />
+</p>
+-->
+
+> ⭐ **If Easy Quick Form is useful to you, please star the repo** — it helps other
+> developers find it and keeps the project going.
+
+<p align="center">
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" />
   <img alt="React" src="https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB" />
   <img alt="Node.js" src="https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white" />
+  <img alt="Express" src="https://img.shields.io/badge/Express-000000?logo=express&logoColor=white" />
   <img alt="MongoDB" src="https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white" />
+  <img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white" />
   <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" />
 </p>
 
 ---
+
+## Why Easy Quick Form?
+
+- **Own your data** — self-host it with one `docker compose up`; responses live in your MongoDB.
+- **Free and MIT-licensed** — no response limits, no paywalled field types.
+- **A real-world full-stack TypeScript reference** — Google sign-in with refresh-token
+  rotation, shared Zod schemas between client and server, TanStack Query/Table, dnd-kit,
+  Tiptap, Swagger docs, Vitest + Supertest tests and CI. Great for learning the MERN stack.
+
+|                                 | Easy Quick Form | Google Forms | Typeform |
+| ------------------------------- | :-------------: | :----------: | :------: |
+| Open source (MIT)               |       ✅        |      ❌      |    ❌    |
+| Self-hostable (Docker)          |       ✅        |      ❌      |    ❌    |
+| Drag-and-drop builder           |       ✅        |      ✅      |    ✅    |
+| Responses stored in your own DB |       ✅        |      ❌      |    ❌    |
+| Free, unlimited responses       |       ✅        |      ✅      |    ❌    |
+
+## ⚡ Quick start
+
+```bash
+git clone https://github.com/SahinurDEV/easy-quick-form.git
+cd easy-quick-form
+docker compose up --build   # MongoDB + API + client → http://localhost:8080
+```
+
+You need a Google OAuth client ID for sign-in — see [Getting started](#getting-started)
+for the full setup without Docker.
 
 ## Features
 
@@ -236,10 +287,38 @@ Sign-in is Google-only: the former email/password endpoints (`/auth/signup`, `/a
 
 </details>
 
+## Roadmap
+
+Ideas we'd love help with (see the
+[good first issues](https://github.com/SahinurDEV/easy-quick-form/labels/good%20first%20issue)):
+
+- [ ] Export responses to CSV
+- [ ] Dark mode
+- [ ] Form templates (contact, feedback, event registration, quiz)
+- [ ] Conditional logic (show a field based on a previous answer)
+- [ ] Email/webhook notifications on new responses
+- [ ] Response analytics charts
+- [ ] Embeddable forms (`<iframe>` / script snippet)
+- [ ] i18n
+
+Have another idea? [Open a feature request](https://github.com/SahinurDEV/easy-quick-form/issues/new/choose).
+
 ## Contributing
 
 Contributions are welcome! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for the
 development workflow and guidelines, and our [Code of Conduct](./CODE_OF_CONDUCT.md).
+
+### Contributors
+
+<a href="https://github.com/SahinurDEV/easy-quick-form/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=SahinurDEV/easy-quick-form" alt="Contributors" />
+</a>
+
+## Star history
+
+<a href="https://star-history.com/#SahinurDEV/easy-quick-form&Date">
+  <img src="https://api.star-history.com/svg?repos=SahinurDEV/easy-quick-form&type=Date" alt="Star history chart" width="600" />
+</a>
 
 ## Security
 

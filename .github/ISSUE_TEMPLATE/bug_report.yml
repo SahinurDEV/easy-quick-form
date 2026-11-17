@@ -1,0 +1,47 @@
+name: 🐛 Bug report
+description: Something isn't working as expected
+title: '[Bug]: '
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to report a bug! Please search existing issues first.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+  - type: dropdown
+    id: package
+    attributes:
+      label: Affected part
+      options:
+        - client (React app)
+        - server (API)
+        - validation package
+        - Docker / deployment
+        - not sure
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Screenshots / logs
+      description: Paste screenshots or relevant console/server output.
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: 'OS, browser, Node version (e.g. macOS 15, Chrome 142, Node 22)'
