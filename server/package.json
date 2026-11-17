@@ -34,7 +34,7 @@
     "swagger-ui-express": "^5.0.1",
     "typescript": "^5.2.2",
     "uuid": "^14.0.3",
-    "zod": "^3.25.76"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
