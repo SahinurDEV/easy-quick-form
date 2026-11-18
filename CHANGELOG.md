@@ -6,7 +6,7 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
-## [1.0.0] - TBD
+## [1.0.0] - 2026-11-18
 
 First tagged release.
 
@@ -20,7 +20,21 @@ First tagged release.
 - Swagger API docs at `/api/docs`, Docker Compose setup, Vercel deployment.
 - Vitest + Supertest test suites and GitHub Actions CI.
 
+### Changed
+
+- Zod 4 for the shared validation schemas (#84).
+- Vite 7, Vitest 4, TypeScript 5.9 and patched transitive dependencies; `pnpm audit`
+  down from 29 to 5 advisories (#83).
+- Client linting moved to an ESLint 9 flat config with eslint-plugin-react-hooks 7 (#86).
+- Removed the redundant `@types/uuid` stub (#85).
+- README, issue forms and contributing guide refreshed (#87).
+
 ### Fixed
 
 - Deleting a form now deletes its responses (#32).
 - Support for Mongoose 9 (#69).
+- The form builder no longer schedules a new timeout on every re-render after an
+  element is dropped (#86).
+
+[Unreleased]: https://github.com/SahinurDEV/easy-quick-form/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/SahinurDEV/easy-quick-form/releases/tag/v1.0.0
