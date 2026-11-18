@@ -84,7 +84,7 @@ export const updateProfile = catchAsyncError(
         name,
         avatar: req.file ? req.file.filename : req.body.avatar,
       },
-      { new: true },
+      { returnDocument: 'after' },
     );
 
     res.status(200).json({
