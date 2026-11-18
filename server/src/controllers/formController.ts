@@ -1,4 +1,5 @@
 import { type NextFunction, type Request, type Response } from 'express';
+import { Types, type PipelineStage } from 'mongoose';
 import { createFormSchema } from '@form-builder/validation';
 import type { FormElementsType } from '@form-builder/validation/types';
 import catchAsyncError from '../utils/catchAsyncError';
@@ -6,8 +7,29 @@ import Form from '../models/formModel';
 import FormResponse from '../models/formResponseModel';
 import AppError from '../utils/appError';
 
+const SORTABLE_FIELDS = new Set([
+  'name',
+  'isActive',
+  'createdAt',
+  'updatedAt',
+  'responseCount',
+]);
+
+const parseSort = (value?: string): Record<string, 1 | -1> | undefined => {
+  if (!value) return undefined;
+
+  const desc = value.startsWith('-');
+  const field = desc ? value.slice(1) : value;
+
+  if (!SORTABLE_FIELDS.has(field)) return undefined;
+
+  return { [field]: desc ? -1 : 1 };
+};
+
 export const getAllForms = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.userId) return next(new AppError('Unauthorized', 401));
+
     const page = Number(req.query.page) || 0;
     const pageSize = Number(req.query.pageSize) || 10;
     const skip = page * pageSize;
@@ -15,18 +37,53 @@ export const getAllForms = catchAsyncError(
       typeof req.query.search === 'string' ? req.query.search : undefined;
 
     const query = searchQuery
-      ? { user: req.userId, name: { $regex: searchQuery, $options: 'i' } }
-      : { user: req.userId };
+      ? {
+          user: new Types.ObjectId(req.userId),
+          name: { $regex: searchQuery, $options: 'i' },
+        }
+      : { user: new Types.ObjectId(req.userId) };
     const total = await Form.countDocuments(query);
 
     if (req.query.page && req.query.page !== '0' && skip >= total)
       return next(new AppError('This page does not exist', 404));
 
-    const forms = await Form.find(query)
-      .sort(req.query.sort?.toString())
-      .skip(skip)
-      .limit(pageSize)
-      .exec();
+    const responseCountStages: PipelineStage[] = [
+      {
+        $lookup: {
+          from: FormResponse.collection.name,
+          let: { formId: '$_id' },
+          pipeline: [
+            { $match: { $expr: { $eq: ['$form', '$$formId'] } } },
+            { $count: 'count' },
+          ],
+          as: 'responseStats',
+        },
+      },
+      {
+        $addFields: {
+          responseCount: {
+            $ifNull: [{ $arrayElemAt: ['$responseStats.count', 0] }, 0],
+          },
+        },
+      },
+      { $project: { responseStats: 0 } },
+    ];
+
+    const sort = parseSort(req.query.sort?.toString());
+    const pagination: PipelineStage[] = [{ $skip: skip }, { $limit: pageSize }];
+
+    // Counting responses requires a lookup per form, so only do it before
+    // pagination when the result is sorted by the count itself.
+    const pipeline: PipelineStage[] = [{ $match: query }];
+
+    if (sort && 'responseCount' in sort) {
+      pipeline.push(...responseCountStages, { $sort: sort }, ...pagination);
+    } else {
+      if (sort) pipeline.push({ $sort: sort });
+      pipeline.push(...pagination, ...responseCountStages);
+    }
+
+    const forms = await Form.aggregate(pipeline);
 
     res.status(200).json({
       status: 'success',

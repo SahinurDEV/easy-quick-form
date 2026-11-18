@@ -10,6 +10,7 @@ export type FormType = {
   name: string;
   elements: FormElementsType[];
   user: string;
+  responseCount: number;
   createdAt: string;
   updatedAt: string;
 };

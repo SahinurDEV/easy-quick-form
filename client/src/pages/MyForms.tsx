@@ -127,6 +127,13 @@ export default function MyForms() {
         ),
       },
       {
+        accessorKey: 'responseCount',
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Responses" />
+        ),
+        cell: ({ row }) => <span>{row.original.responseCount}</span>,
+      },
+      {
         accessorKey: 'createdAt',
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Created Date" />

@@ -106,6 +106,59 @@ describe('Forms API: ownership', () => {
   });
 });
 
+describe('Forms API: response counts', () => {
+  const createForm = async (token: string, name: string) => {
+    const res = await request(app)
+      .post('/api/v1/forms')
+      .set(auth(token))
+      .send({ name, elements: [{ id: 'q1', type: 'text' }] });
+    return res.body.data.form._id as string;
+  };
+
+  const submitResponse = (formId: string) =>
+    request(app)
+      .post(`/api/v1/forms/${formId}/responses`)
+      .send({
+        response: [{ elementType: 'text', question: 'Name', answer: 'hi' }],
+      });
+
+  it('includes the response count for every form', async () => {
+    const token = await signup('counts@example.com');
+    const empty = await createForm(token, 'No responses');
+    const answered = await createForm(token, 'Answered');
+    await submitResponse(answered);
+    await submitResponse(answered);
+
+    const res = await request(app).get('/api/v1/forms').set(auth(token));
+    expect(res.status).toBe(200);
+
+    const counts = Object.fromEntries(
+      res.body.data.forms.map(
+        (form: { _id: string; responseCount: number }) => [
+          form._id,
+          form.responseCount,
+        ],
+      ),
+    );
+    expect(counts).toEqual({ [empty]: 0, [answered]: 2 });
+  });
+
+  it('sorts forms by response count', async () => {
+    const token = await signup('sort-counts@example.com');
+    const empty = await createForm(token, 'No responses');
+    const answered = await createForm(token, 'Answered');
+    await submitResponse(answered);
+
+    const res = await request(app)
+      .get('/api/v1/forms?sort=-responseCount')
+      .set(auth(token));
+    expect(res.status).toBe(200);
+    expect(
+      res.body.data.forms.map((form: { _id: string }) => form._id),
+    ).toEqual([answered, empty]);
+  });
+});
+
 describe('Forms API: deleting removes responses', () => {
   const createFormWithResponse = async (token: string, name: string) => {
     const res = await request(app)
