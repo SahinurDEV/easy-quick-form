@@ -6,6 +6,7 @@ import {
   Trash2Icon,
   LinkIcon,
   FilesIcon,
+  CopyIcon,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
@@ -48,6 +49,17 @@ export default function DataTableRowActions({ formId }: { formId: string }) {
     onError: () => toast.error('Error deleting form'),
   });
 
+  const copyFormLink = async () => {
+    const formUrl = window.location.origin + '/forms/' + formId;
+
+    try {
+      await navigator.clipboard.writeText(formUrl);
+      toast.success('Form link copied to clipboard');
+    } catch {
+      toast.error('Error copying form link');
+    }
+  };
+
   return (
     <DropdownMenu modal={false} open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
@@ -74,6 +86,13 @@ export default function DataTableRowActions({ formId }: { formId: string }) {
         >
           <LinkIcon className="h-4 w-4 text-muted-foreground" />
           <span>Open Form Link</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="flex items-center gap-2"
+          onClick={copyFormLink}
+        >
+          <CopyIcon className="h-4 w-4 text-muted-foreground" />
+          <span>Copy form link</span>
         </DropdownMenuItem>
         <ResponsesDialog formId={formId} closeHandler={() => setOpen(false)}>
           <DropdownMenuItem
