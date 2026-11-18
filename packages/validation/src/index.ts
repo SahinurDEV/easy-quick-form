@@ -1,7 +1,16 @@
 import { z } from 'zod';
 
+/**
+ * Zod v4 replacement for v3's `required_error`: only customise the message
+ * when the value is missing, keep Zod's default message for wrong types.
+ */
+const required = (message: string) => ({
+  error: (issue: { input?: unknown }) =>
+    issue.input === undefined ? message : undefined,
+});
+
 const password = z
-  .string({ required_error: 'Please provide a password' })
+  .string({ ...required('Please provide a password') })
   .regex(new RegExp('.*[A-Z].*'), 'Must contain a uppercase character')
   .regex(new RegExp('.*[a-z].*'), 'Must contain a lowercase character')
   .regex(new RegExp('.*\\d.*'), 'Must contain a number')
@@ -14,15 +23,15 @@ const password = z
 export const registerSchema = z
   .object({
     name: z
-      .string({ required_error: 'Please tell us your name' })
+      .string({ ...required('Please tell us your name') })
       .trim()
       .min(1, 'Please tell us your name')
       .max(30),
     email: z
-      .string({ required_error: 'Please provide your email' })
+      .string({ ...required('Please provide your email') })
       .email('Please enter a valid email'),
     password,
-    cPassword: z.string({ required_error: 'Please confirm your password' }),
+    cPassword: z.string({ ...required('Please confirm your password') }),
   })
   .refine(({ password, cPassword }) => password === cPassword, {
     path: ['cPassword'],
@@ -31,16 +40,16 @@ export const registerSchema = z
 
 export const loginSchema = z.object({
   email: z
-    .string({ required_error: 'Please provide your email' })
+    .string({ ...required('Please provide your email') })
     .email('Please enter a valid email'),
   password: z
-    .string({ required_error: 'Please provide a password' })
+    .string({ ...required('Please provide a password') })
     .min(1, 'Please provide a password'),
 });
 
 export const forgotPasswordSchema = z.object({
   email: z
-    .string({ required_error: 'Please provide your email' })
+    .string({ ...required('Please provide your email') })
     .email('Please enter a valid email'),
 });
 
@@ -48,7 +57,7 @@ export const resetPasswordSchema = z
   .object({
     newPassword: password,
     cNewPassword: z.string({
-      required_error: 'Please confirm your new password',
+      ...required('Please confirm your new password'),
     }),
   })
   .refine(({ newPassword, cNewPassword }) => newPassword === cNewPassword, {
@@ -58,10 +67,10 @@ export const resetPasswordSchema = z
 
 export const changePasswordSchema = z
   .object({
-    oldPassword: z.string({ required_error: 'Please provide old password' }),
+    oldPassword: z.string({ ...required('Please provide old password') }),
     newPassword: password,
     cNewPassword: z.string({
-      required_error: 'Please confirm your new password',
+      ...required('Please confirm your new password'),
     }),
   })
   .refine(({ newPassword, cNewPassword }) => newPassword === cNewPassword, {
@@ -71,25 +80,25 @@ export const changePasswordSchema = z
 
 export const userProfileSchema = z.object({
   name: z
-    .string({ required_error: 'Please tell us your name' })
+    .string({ ...required('Please tell us your name') })
     .trim()
     .min(1, 'Please tell us your name')
     .max(30)
     .optional(),
   email: z
-    .string({ required_error: 'Please provide your email' })
+    .string({ ...required('Please provide your email') })
     .email('Please enter a valid email')
     .optional(),
 });
 
 export const createFormSchema = z.object({
   name: z
-    .string({ required_error: 'Please provide a form name' })
+    .string({ ...required('Please provide a form name') })
     .trim()
     .min(1, 'Please provide a form name'),
   elements: z
     .array(z.unknown(), {
-      required_error: 'Please provide form elements',
+      ...required('Please provide form elements'),
     })
     .min(1, 'Please provide at least one form element'),
 });
