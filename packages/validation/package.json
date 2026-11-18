@@ -10,7 +10,7 @@
   "author": "shrestharohan039@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "typescript": "^5.2.2",
+    "typescript": "^5.9.3",
     "zod": "^4.6.7"
   }
 }

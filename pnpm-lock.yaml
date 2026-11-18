@@ -118,8 +118,8 @@ importers:
         specifier: ^5.107.1
         version: 5.107.1(@types/react@18.2.31)(react@18.3.1)
       '@tanstack/react-table':
-        specifier: ^8.10.7
-        version: 8.10.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^8.21.3
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tiptap/extension-placeholder':
         specifier: ^2.27.3
         version: 2.27.3(@tiptap/core@2.27.3(@tiptap/pm@2.27.3))(@tiptap/pm@2.27.3)
@@ -299,8 +299,8 @@ importers:
   packages/validation:
     dependencies:
       typescript:
-        specifier: ^5.2.2
-        version: 5.2.2
+        specifier: ^5.9.3
+        version: 5.9.3
       zod:
         specifier: ^4.6.7
         version: 4.6.7
@@ -2041,20 +2041,20 @@ packages:
       '@types/react':
         optional: true
 
-  '@tanstack/react-table@8.10.7':
-    resolution: {integrity: sha512-bXhjA7xsTcsW8JPTTYlUg/FuBpn8MNjiEPhkNhIGCUR6iRQM2+WEco4OBpvDeVcR9SE+bmWLzdfiY7bCbCSVuA==}
+  '@tanstack/react-table@8.21.3':
+    resolution: {integrity: sha512-5nNMTSETP4ykGegmVkhjcS8tTLW6Vl4axfEGQN3v0zdHYbK4UfoqfPChclTrJ4EoK9QynqAu9oUf8VEmrpZ5Ww==}
     engines: {node: '>=12'}
     peerDependencies:
-      react: '>=16'
-      react-dom: '>=16'
+      react: '>=16.8'
+      react-dom: '>=16.8'
 
   '@tanstack/solid-virtual@3.13.53':
     resolution: {integrity: sha512-LUdGSmkTkwtpUea4w7bJp6N6ErnNkWT5iXpvn0mI9ijjtVrOa0JkSX8ZhQfNZxbhm4cnlGYbz/U1SQn/LqSNlw==}
     peerDependencies:
       solid-js: ^1.3.0
 
-  '@tanstack/table-core@8.10.7':
-    resolution: {integrity: sha512-KQk5OMg5OH6rmbHZxuNROvdI+hKDIUxANaHlV+dPlNN7ED3qYQ/WkpY2qlXww1SIdeMlkIhpN/2L00rof0fXFw==}
+  '@tanstack/table-core@8.21.3':
+    resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
     engines: {node: '>=12'}
 
   '@tanstack/virtual-core@3.19.11':
@@ -5125,11 +5125,6 @@ packages:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '>=4.8.4 <6.1.0'
 
-  typescript@5.2.2:
-    resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
-    engines: {node: '>=14.17'}
-    hasBin: true
-
   typescript@5.9.3:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
     engines: {node: '>=14.17'}
@@ -6866,9 +6861,9 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.2.31
 
-  '@tanstack/react-table@8.10.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-table@8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tanstack/table-core': 8.10.7
+      '@tanstack/table-core': 8.21.3
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
@@ -6877,7 +6872,7 @@ snapshots:
       '@tanstack/virtual-core': 3.19.11
       solid-js: 1.9.19
 
-  '@tanstack/table-core@8.10.7': {}
+  '@tanstack/table-core@8.21.3': {}
 
   '@tanstack/virtual-core@3.19.11': {}
 
@@ -10434,8 +10429,6 @@ snapshots:
     transitivePeerDependencies:
       - '@typescript/native'
       - supports-color
-
-  typescript@5.2.2: {}
 
   typescript@5.9.3: {}
 
