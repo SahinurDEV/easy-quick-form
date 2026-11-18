@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Server: `findOneAndUpdate` / `findByIdAndUpdate` use `returnDocument: 'after'` instead of
+  the deprecated `new: true`, so the Mongoose deprecation warning is gone (#103).
+
 ## [1.0.0] - 2026-11-18
 
 First tagged release.

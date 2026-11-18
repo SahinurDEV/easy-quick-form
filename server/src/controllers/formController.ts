@@ -105,7 +105,7 @@ export const updateForm = catchAsyncError(
     const form = await Form.findOneAndUpdate(
       { _id: req.params.id, user: req.userId },
       updates,
-      { new: true },
+      { returnDocument: 'after' },
     );
     if (!form) return next(new AppError('No form found with that ID', 404));
 
