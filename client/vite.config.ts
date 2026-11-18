@@ -20,11 +20,22 @@ export default defineConfig({
       output: {
         // Split heavy vendor libraries into their own chunks so the main
         // bundle stays small and chunks can be cached independently.
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          editor: ['@tiptap/react', '@tiptap/starter-kit'],
-          dnd: ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/modifiers'],
-          query: ['@tanstack/react-query', '@tanstack/react-table'],
+        // Function form: Vite 8 (Rolldown) no longer accepts the object form.
+        manualChunks(id: string) {
+          if (!id.includes('node_modules')) return undefined;
+          if (
+            /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom|scheduler)[\\/]/.test(
+              id,
+            )
+          )
+            return 'react-vendor';
+          if (
+            /[\\/]node_modules[\\/](@tiptap|prosemirror-[^\\/]+)[\\/]/.test(id)
+          )
+            return 'editor';
+          if (/[\\/]node_modules[\\/]@dnd-kit[\\/]/.test(id)) return 'dnd';
+          if (/[\\/]node_modules[\\/]@tanstack[\\/]/.test(id)) return 'query';
+          return undefined;
         },
       },
     },
