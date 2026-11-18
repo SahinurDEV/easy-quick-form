@@ -6,9 +6,12 @@ import { initialAuthState, useAuth } from '../../contexts/AuthContext';
 import LoadingSvg from '../../assets/loading.svg';
 
 export default function PersistLogin() {
-  const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
   const { auth, setAuth, persist } = useAuth();
+  // Only show the spinner when we actually need to restore the session.
+  const [isLoading, setIsLoading] = useState(
+    () => !auth?.accessToken && persist,
+  );
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const initialized = useRef(false);
@@ -37,8 +40,6 @@ export default function PersistLogin() {
 
     if (!auth?.accessToken && persist) {
       verifyRefreshToken();
-    } else {
-      setIsLoading(false);
     }
 
     return () => {
@@ -48,7 +49,7 @@ export default function PersistLogin() {
 
   return !persist ? (
     <Outlet />
-  ) : isLoading ? (
+  ) : isLoading && !auth?.accessToken ? (
     <img src={LoadingSvg} alt="Loading Spinner" className="mx-auto mt-8 h-20" />
   ) : (
     <Outlet />

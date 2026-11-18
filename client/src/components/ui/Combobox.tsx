@@ -27,11 +27,8 @@ interface Props {
 
 export function Combobox({ options, field }: Props) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState('');
-
-  React.useEffect(() => {
-    setValue(field?.value ?? '');
-  }, [field?.value]);
+  const [localValue, setValue] = React.useState('');
+  const value: string = field ? (field.value ?? '') : localValue;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
