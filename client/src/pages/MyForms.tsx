@@ -41,15 +41,16 @@ export default function MyForms() {
     sort: searchParams.get('sort') || '-createdAt',
     search: searchParams.get('query'),
   };
-  const { data, isPending, isError, isFetching } = useQuery<FormsResponseType>({
-    queryKey: ['forms', params],
-    queryFn: () =>
-      axiosPrivate({
-        url: '/forms',
-        params,
-      }).then(res => res.data.data),
-    placeholderData: keepPreviousData,
-  });
+  const { data, isPending, isError, isFetching, isPlaceholderData } =
+    useQuery<FormsResponseType>({
+      queryKey: ['forms', params],
+      queryFn: () =>
+        axiosPrivate({
+          url: '/forms',
+          params,
+        }).then(res => res.data.data),
+      placeholderData: keepPreviousData,
+    });
 
   const {
     mutate: toggleActive,
@@ -164,7 +165,7 @@ export default function MyForms() {
   if (isError) return <Error fullScreen={false} />;
 
   if (
-    !isFetching &&
+    !isPlaceholderData &&
     !params.search &&
     data.total === 0 &&
     data.forms.length === 0

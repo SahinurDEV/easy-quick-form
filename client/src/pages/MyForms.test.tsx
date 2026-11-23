@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import MyForms from './MyForms';
+import type { FormType } from '../types';
 
 const request = vi.hoisted(() => vi.fn());
 vi.mock('../hooks/useAxiosPrivate', () => ({ default: () => request }));
@@ -12,8 +13,8 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-function renderForms(query = '', total = 0) {
-  request.mockResolvedValue({ data: { data: { forms: [], total } } });
+function renderForms(query = '', forms: FormType[] = []) {
+  request.mockResolvedValue({ data: { data: { forms, total: forms.length } } });
   return render(
     <QueryClientProvider
       client={
@@ -47,11 +48,45 @@ describe('My Forms empty state', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('does not treat an empty page as a new account', async () => {
-    renderForms('?page=2', 10);
-    expect(await screen.findByText('No results.')).toBeInTheDocument();
+  it('shows existing forms in the table', async () => {
+    renderForms('', [
+      {
+        _id: 'form-1',
+        name: 'Feedback',
+        isActive: true,
+        responseCount: 0,
+        elements: [],
+        user: 'user-1',
+        createdAt: '2026-11-01',
+        updatedAt: '2026-11-01',
+      },
+    ]);
+    expect(await screen.findByText('Feedback')).toBeInTheDocument();
+    expect(screen.getByRole('table')).toBeInTheDocument();
     expect(
       screen.queryByRole('link', { name: 'Create your first form' }),
     ).not.toBeInTheDocument();
+  });
+
+  it('keeps the friendly state while cached empty forms refetch', () => {
+    request.mockReturnValue(new Promise(() => {}));
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+    client.setQueryData(
+      ['forms', { page: 0, pageSize: 10, sort: '-createdAt', search: null }],
+      { forms: [], total: 0 },
+    );
+    render(
+      <QueryClientProvider client={client}>
+        <MemoryRouter initialEntries={['/my-forms']}>
+          <MyForms />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+    expect(
+      screen.getByRole('link', { name: 'Create your first form' }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('No results.')).not.toBeInTheDocument();
   });
 });
