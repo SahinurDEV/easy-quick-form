@@ -5,7 +5,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ColumnDef } from '@tanstack/react-table';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
@@ -15,6 +15,7 @@ import { DataTable } from '../components/shared/data-table/DataTable';
 import useTitle from '../hooks/useTitle';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import type { FormType, PaginatedResponseType } from '../types';
+import { Button } from '../components/ui/Button';
 import { Checkbox } from '../components/ui/Checkbox';
 import { DataTableColumnHeader } from '../components/shared/data-table/DataTableColumnHeader';
 import { Switch } from '../components/ui/Switch';
@@ -161,6 +162,26 @@ export default function MyForms() {
 
   if (isPending) return <DataTableShimmer columns={4} />;
   if (isError) return <Error fullScreen={false} />;
+
+  if (
+    !isFetching &&
+    !params.search &&
+    data.total === 0 &&
+    data.forms.length === 0
+  )
+    return (
+      <div className="flex flex-col items-center gap-4 rounded-md border px-6 py-12 text-center">
+        <h2 className="text-lg font-medium">
+          You don&apos;t have any forms yet
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Create a form to start collecting responses.
+        </p>
+        <Button asChild>
+          <Link to="/">Create your first form</Link>
+        </Button>
+      </div>
+    );
 
   return (
     <DataTable<FormType, string>
