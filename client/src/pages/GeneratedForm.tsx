@@ -23,6 +23,7 @@ import Error from './Error';
 import useTitle from '../hooks/useTitle';
 import FormElementCard from '../components/create-form/FormElementCard';
 import { Form, FormControl, FormField, FormItem } from '../components/ui/Form';
+import { ThemeToggle } from '../components/header/ThemeToggle';
 
 interface Props {
   onClear: () => void;
@@ -36,7 +37,7 @@ const ClearFormButton = ({ onClear, disabled = false }: Props) => (
         type="button"
         variant="ghost"
         disabled={disabled}
-        className="text-primary hover:bg-slate-300/25 hover:text-primary"
+        className="text-primary hover:bg-primary/10 hover:text-primary"
       >
         Clear Form
       </Button>
@@ -127,14 +128,15 @@ export default function GeneratedForm() {
         className="flex min-h-[100dvh] flex-col bg-muted"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <header className="fixed left-0 right-0 top-0 z-30 border-b bg-white/80 backdrop-blur-sm">
+        <header className="fixed left-0 right-0 top-0 z-30 border-b bg-background/80 backdrop-blur-sm">
           <div className="mx-auto flex h-16 w-full max-w-[1440px] items-center justify-between px-6">
             <Link to="/">
               <h1 className="font-cursive text-3xl font-bold text-primary">
                 Easy Quick Form
               </h1>
             </Link>
-            <div className="flex gap-6">
+            <div className="flex items-center gap-6">
+              <ThemeToggle />
               <ClearFormButton
                 disabled={isPending || mutation.isPending}
                 onClear={() => form.reset()}

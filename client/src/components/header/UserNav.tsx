@@ -41,7 +41,7 @@ export default function UserNav() {
 
   return (
     <DropdownMenu modal={false} open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger className="rounded-full outline-none ring-slate-300 transition-shadow duration-200 hover:ring data-[state=open]:ring data-[state=open]:ring-ring">
+      <DropdownMenuTrigger className="rounded-full outline-none ring-border transition-shadow duration-200 hover:ring data-[state=open]:ring data-[state=open]:ring-ring">
         <UserAvatar className="cursor-pointer" />
       </DropdownMenuTrigger>
       <DropdownMenuContent sideOffset={2} align="end">
@@ -72,7 +72,7 @@ export default function UserNav() {
         </Link>
         <LogoutAlertDialog closeHandler={() => setOpen(false)}>
           <DropdownMenuItem
-            className="gap-2 font-medium focus:bg-red-100"
+            className="gap-2 font-medium focus:bg-destructive/10 focus:text-destructive"
             onSelect={e => e.preventDefault()}
           >
             <LogOutIcon className="h-5 w-5" />

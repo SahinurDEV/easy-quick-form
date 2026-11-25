@@ -1,4 +1,3 @@
-import colors from 'tailwindcss/colors';
 import defaultTheme from 'tailwindcss/defaultTheme';
 import tailwindcssAnimate from 'tailwindcss-animate';
 import typography from '@tailwindcss/typography';
@@ -16,26 +15,30 @@ export default {
         cursive: 'Dancing Script',
       },
       colors: {
-        border: colors.slate[200],
-        ring: colors.slate[400],
-        foreground: colors.slate[950],
-        background: '#fff',
+        border: 'hsl(var(--border))',
+        ring: 'hsl(var(--ring))',
+        foreground: 'hsl(var(--foreground))',
+        background: 'hsl(var(--background))',
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
         muted: {
-          DEFAULT: colors.slate[100],
-          foreground: colors.slate[500],
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
         },
         primary: {
-          DEFAULT: colors.indigo[700],
-          foreground: colors.slate[50],
-          background: colors.indigo[100],
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+          background: 'hsl(var(--primary-background))',
         },
         secondary: {
-          DEFAULT: colors.slate[100],
-          foreground: colors.slate[900],
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
         destructive: {
-          DEFAULT: colors.red[600],
-          foreground: colors.slate[50],
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
         },
       },
     },

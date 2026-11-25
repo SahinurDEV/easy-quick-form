@@ -73,13 +73,13 @@ export default function FormPlayground({
         <section
           ref={setNodeRef}
           className={`flex-grow rounded-lg border-2 border-dashed bg-muted/25 ${
-            isOver ? 'border-muted-foreground' : 'border-slate-300'
+            isOver ? 'border-muted-foreground' : 'border-border'
           }`}
         >
           {formElements.length === 0 ? (
             <p
               className={`flex h-full items-center justify-center font-medium ${
-                isOver ? 'text-slate-700' : 'text-muted-foreground'
+                isOver ? 'text-foreground' : 'text-muted-foreground'
               }`}
             >
               {isOver

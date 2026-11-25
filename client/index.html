@@ -12,8 +12,20 @@
     <link rel="stylesheet" href="/src/styles/globals.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Easy Quick Form</title>
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme') || 'system';
+          var isDark =
+            theme === 'dark' ||
+            (theme === 'system' &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.classList.toggle('dark', isDark);
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body class="text-foreground">
+  <body class="bg-background text-foreground">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

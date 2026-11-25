@@ -111,7 +111,7 @@ export default function AvatarEditorDialog({ children, closeHandler }: Props) {
             className={`group flex h-64 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed ${
               isDragActive && !isDragReject
                 ? 'border-muted-foreground bg-muted'
-                : 'border-slate-300 hover:border-muted-foreground hover:bg-muted'
+                : 'border-border hover:border-muted-foreground hover:bg-muted'
             }`}
             {...getRootProps()}
           >
@@ -119,8 +119,8 @@ export default function AvatarEditorDialog({ children, closeHandler }: Props) {
             <CloudUploadSvg
               className={`h-10 w-10 ${
                 isDragActive && !isDragReject
-                  ? 'text-slate-700'
-                  : 'text-muted-foreground group-hover:text-slate-700'
+                  ? 'text-foreground'
+                  : 'text-muted-foreground group-hover:text-foreground'
               }`}
             />
             {isDragReject ? (
@@ -128,11 +128,11 @@ export default function AvatarEditorDialog({ children, closeHandler }: Props) {
                 Only *.jpeg and *.png images are accepted
               </p>
             ) : isDragActive ? (
-              <p className="text-sm font-medium text-slate-700">
+              <p className="text-sm font-medium text-foreground">
                 Drop the image here ...
               </p>
             ) : (
-              <div className="space-y-1 text-center text-sm text-muted-foreground group-hover:text-slate-700">
+              <div className="space-y-1 text-center text-sm text-muted-foreground group-hover:text-foreground">
                 <p className="font-medium">Choose or Drag & drop image</p>
                 <p>(Only *.jpeg and *.png images will be accepted)</p>
               </div>

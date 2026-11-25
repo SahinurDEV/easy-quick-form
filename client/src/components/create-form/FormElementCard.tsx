@@ -73,7 +73,7 @@ export default function FormElementCard({
 
   return (
     <article
-      className={`relative flex gap-2 rounded-md bg-white py-3 shadow ${
+      className={`relative flex gap-2 rounded-md bg-card py-3 shadow ${
         isDragging ? 'z-10' : ''
       } ${isView ? 'px-5' : 'pl-2 pr-4'}`}
       ref={setNodeRef}

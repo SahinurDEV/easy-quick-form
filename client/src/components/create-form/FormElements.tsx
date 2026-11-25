@@ -158,7 +158,7 @@ export default function FormElements({ isUpdate }: Props) {
       } shrink-0 pr-[26px]`}
     >
       <aside className="relative w-80">
-        <section className="sticky top-0 z-10 space-y-5 bg-white pb-5">
+        <section className="sticky top-0 z-10 space-y-5 bg-background pb-5">
           <div className="space-y-1">
             <h1 className="text-lg font-semibold">Form Elements</h1>
             <h2 className="text-sm text-muted-foreground">

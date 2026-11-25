@@ -9,6 +9,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import App from './App.tsx';
 import AuthProvider from './contexts/AuthContext.tsx';
+import { ThemeProvider } from './contexts/ThemeContext.tsx';
 
 if (process.env.NODE_ENV === 'production') {
   disableReactDevTools();
@@ -26,16 +27,23 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <AuthProvider>
+    <ThemeProvider>
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <CookiesProvider>
-          <QueryClientProvider client={queryClient}>
-            <App />
-            <Toaster position="bottom-center" />
-            <ReactQueryDevtools />
-          </QueryClientProvider>
+          <AuthProvider>
+            <QueryClientProvider client={queryClient}>
+              <App />
+              <Toaster
+                position="bottom-center"
+                toastOptions={{
+                  className: '!bg-card !text-foreground !border !border-border',
+                }}
+              />
+              <ReactQueryDevtools />
+            </QueryClientProvider>
+          </AuthProvider>
         </CookiesProvider>
-      </AuthProvider>
-    </GoogleOAuthProvider>
+      </GoogleOAuthProvider>
+    </ThemeProvider>
   </React.StrictMode>,
 );

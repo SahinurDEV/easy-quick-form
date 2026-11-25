@@ -44,7 +44,7 @@ export default function Settings() {
           <AlertDialogTrigger asChild>
             <Button
               variant="ghost"
-              className="gap-2 text-destructive hover:bg-red-50 hover:text-destructive"
+              className="gap-2 text-destructive hover:bg-destructive/10 hover:text-destructive"
             >
               <Trash2Icon className="h-5 w-5" />
               <span>Delete Account</span>

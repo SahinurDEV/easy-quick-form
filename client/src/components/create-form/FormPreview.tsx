@@ -6,7 +6,7 @@ export default function FormPreview() {
   const formElements = useFormPlaygroundStore(state => state.formElements);
 
   return (
-    <section className="flex-grow rounded-lg border-2 border-dashed border-slate-300 bg-muted">
+    <section className="flex-grow rounded-lg border-2 border-dashed border-border bg-muted">
       {formElements.length === 0 ? (
         <p className="flex h-full items-center justify-center font-medium text-muted-foreground">
           Add some form elements in the builder view
